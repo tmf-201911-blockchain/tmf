@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.whalecloud.mapper.re.SettlementMapper">
+
+
+    <resultMap type="com.whalecloud.domain.RentSettlement" id="rentInSettlement">
+        <result property="resourceName" column="resource_name"/>
+        <result property="resourceType" column="resource_type"/>
+        <result property="owner" column="owner"/>
+        <result property="status" column="status"/>
+        <result property="areaCode" column="area_code"/>
+        <result property="effectiveTime" column="effective_time"/>
+        <result property="rate" column="rate"/>
+    </resultMap>
+    <select id="findRentInSettlement" parameterType="java.lang.String" resultMap="rentInSettlement">
+        SELECT resource_name,resource_type,owner,status,area_code,effective_time,rate
+        FROM res_detail
+        WHERE lessee=#{lessee} AND lease_status=0
+        <if test="status !=null">
+            AND status = #{status}
+        </if>
+        <if test="resourceType !=null">
+            AND resource_type = #{resourceType}
+        </if>
+        <if test="resourceName != null">
+            AND resource_name LIKE concat('%',concat(#{resourceName}),'%')
+        </if>
+    </select>
+
+    <resultMap type="com.whalecloud.domain.RentSettlement" id="rentOutSettlement">
+        <result property="resourceName" column="resource_name"/>
+        <result property="resourceId" column="resource_id"/>
+        <result property="resourceType" column="resource_type"/>
+        <result property="lessee" column="lessee"/>
+        <result property="status" column="status"/>
+        <result property="areaCode" column="area_code"/>
+        <result property="effectiveTime" column="effective_time"/>
+        <result property="rate" column="rate"/>
+    </resultMap>
+    <select id="findRentOutSettlement" parameterType="java.lang.String" resultMap="rentOutSettlement">
+        SELECT resource_name,resource_id,resource_type,lessee,status,area_code,effective_time,rate
+        FROM res_detail
+        WHERE lessor=#{lessor} AND lease_status=2
+        <if test="status !=null">
+            AND status = #{status}
+        </if>
+        <if test="resourceType !=null">
+            AND resource_type = #{resourceType}
+        </if>
+        <if test="resourceName != null">
+            AND resource_name LIKE concat('%',concat(#{resourceName}),'%')
+        </if>
+    </select>
+
+    <select id="getAvgStar" resultType="java.lang.Double" parameterType="java.lang.String">
+        SELECT CAST(AVG(star) AS DECIMAL(10,1)) AS avg_star FROM report_res WHERE resource_id = #{resourceId}
+    </select>
+
+    <select id="getStar" resultType="java.lang.Integer" parameterType="java.lang.String">
+        SELECT COUNT(star) FROM report_res
+        WHERE resource_id = #{resourceId}
+    </select>
+
+</mapper>

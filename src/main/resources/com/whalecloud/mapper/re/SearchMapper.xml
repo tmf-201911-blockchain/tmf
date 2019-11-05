@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.whalecloud.mapper.re.SearchMapper">
+
+    <resultMap id="BaseResultMap" type="com.whalecloud.domain.re.SearchInfo">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="info" property="info" jdbcType="VARCHAR"/>
+        <result column="latitude" property="info" jdbcType="VARCHAR"/>
+        <result column="longitude" property="info" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="YN" property="yn" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <insert id="add" parameterType="com.whalecloud.domain.re.SearchInfo">
+        insert into search_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="resourceType != null" >
+                resource_type,
+            </if>
+            <if test="info != null">
+                info,
+            </if>
+            <if test="latitude != null">
+                latitude,
+            </if>
+            <if test="longitude != null">
+                longitude,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="yn != null">
+                YN,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="resourceType != null" >
+                #{resourceType,jdbcType=VARCHAR},
+            </if>
+            <if test="info != null">
+                #{info,jdbcType=VARCHAR},
+            </if>
+            <if test="latitude != null">
+                #{latitude,jdbcType=VARCHAR},
+            </if>
+            <if test="longitude != null">
+                #{longitude,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="yn != null">
+                #{yn,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete" parameterType="java.lang.String">
+      delete from search_info
+      where 1=1 and search_info.resource_type = #{resourceType,jdbcType=VARCHAR}
+    </delete>
+
+    <select id="showList" resultType="com.whalecloud.domain.re.SearchInfo" parameterType="java.lang.String">
+        SELECT * FROM search_info WHERE search_info.YN = 0 and search_info.info != "" and search_info.resource_type = #{resourceType,jdbcType=VARCHAR} ORDER BY search_info.create_time DESC LIMIT 10
+    </select>
+
+</mapper>

@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.whalecloud.mapper.re.ProgressMapper">
+
+    <!--联通和电信收到的资源申请的审批操作-->
+    <update id="updateResourceApply" parameterType="java.lang.String">
+        UPDATE res_progress p,res_detail d
+        SET p.progress=#{progress},d.lessor=#{lessor},d.lessee=#{lessee},p.process_time=NOW(),
+            p.effective_time=#{effectiveTime},d.effective_time=#{effectiveTime},p.opinion=#{opinion},d.lease_status=#{leaseStatus}
+        WHERE p.resource_id=d.resource_id AND p.task_id=#{taskId}
+    </update>
+
+    <!--联通和电信收到的终止申请的审批-->
+    <update id="updateTerminationApply" parameterType="java.lang.String">
+        UPDATE res_progress p,res_detail d
+        SET p.progress=#{progress},d.lessor=null,d.lessee=null,p.process_time=NOW(),
+            p.effective_time=#{effectiveTime},d.effective_time=#{effectiveTime},p.opinion=#{opinion},d.lease_status=#{leaseStatus}
+        WHERE p.resource_id=d.resource_id AND p.task_id=#{taskId}
+    </update>
+
+    <!--第三方申请建站审批-->
+    <update id="updatePlaning"  parameterType="java.lang.String">
+        UPDATE res_progress SET progress=#{progress},investment_cost =#{investmentCost},opinion=#{opinion} WHERE task_id=#{taskId};
+    </update>
+
+    <resultMap type="com.whalecloud.domain.Progress" id="unicomUnfinishedByCondition">
+        <result property="resourceName" column="resource_name"/>
+        <result property="resourceId" column="resource_id"/>
+        <result property="applicationType" column="application_type"/>
+        <result property="taskId" column="task_id"/>
+        <result property="areaCode" column="area_code"/>
+        <result property="lessee" column="lessee"/>
+        <result property="applicationTime" column="application_time"/>
+        <result property="progress" column="progress"/>
+    </resultMap>
+    <select id="getUnicomUnfinishedByCondition" parameterType="java.lang.String"
+            resultMap="unicomUnfinishedByCondition">
+        SELECT
+        p.resource_name,p.resource_id,p.task_id,r.resource_type,p.lessee,p.application_type,p.application_time,p.progress
+        FROM res_progress p,res_detail r
+        WHERE p.resource_id=r.resource_id AND r.owner='ChinaUnicom' AND p.progress = '0'
+            <if test="resourceType !=null">
+                AND r.resource_type = #{resourceType}
+            </if>
+            <if test="applicationType !=null">
+                AND p.application_type = #{applicationType}
+            </if>
+            <if test="resourceName != null">
+                AND p.resource_name LIKE concat('%',concat(#{resourceName}),'%')
+            </if>
+        ORDER BY p.application_time DESC
+    </select>
+
+    <resultMap type="com.whalecloud.domain.Progress" id="unicomFinishedByCondition">
+        <result property="resourceName" column="resource_name"/>
+        <result property="resourceId" column="resource_id"/>
+        <result property="applicationType" column="application_type"/>
+        <result property="taskId" column="task_id"/>
+        <result property="areaCode" column="area_code"/>
+        <result property="lessee" column="lessee"/>
+        <result property="applicationTime" column="application_time"/>
+        <result property="progress" column="progress"/>
+    </resultMap>
+    <select id="getUnicomFinishedByCondition" parameterType="java.lang.String" resultMap="unicomFinishedByCondition">
+        SELECT
+        p.resource_name,p.resource_id,p.task_id,r.resource_type,p.lessee,p.application_type,p.application_time,p.progress
+        FROM res_progress p,res_detail r
+        WHERE p.resource_id=r.resource_id AND r.owner='ChinaUnicom' AND p.progress != '0'
+        <if test="resourceType !=null">
+            AND r.resource_type = #{resourceType}
+        </if>
+        <if test="applicationType !=null">
+            AND p.application_type = #{applicationType}
+        </if>
+        <if test="resourceName != null">
+            AND p.resource_name LIKE concat('%',concat(#{resourceName}),'%')
+        </if>
+        ORDER BY p.application_time DESC
+    </select>
+
+    <resultMap type="com.whalecloud.domain.Progress" id="unicomApplyByCondition">
+        <result property="resourceName" column="resource_name"/>
+        <result property="resourceId" column="resource_id"/>
+        <result property="applicationType" column="application_type"/>
+        <result property="taskId" column="task_id"/>
+        <result property="areaCode" column="area_code"/>
+        <result property="lessee" column="lessee"/>
+        <result property="applicationTime" column="application_time"/>
+        <result property="progress" column="progress"/>
+    </resultMap>
+    <select id="getUnicomApplyByCondition" parameterType="java.lang.String" resultMap="unicomApplyByCondition">
+        SELECT
+        p.resource_name,p.resource_id,p.task_id,r.resource_type,p.lessee,p.application_type,p.application_time,p.progress
+        FROM res_progress p,res_detail r
+        WHERE p.resource_id=r.resource_id AND r.owner='ChinaTelecom'
+        <if test="resourceType !=null">
+            AND r.resource_type = #{resourceType}
+        </if>
+        <if test="applicationType !=null">
+            AND p.application_type = #{applicationType}
+        </if>
+        <if test="resourceName != null">
+            AND p.resource_name LIKE concat('%',concat(#{resourceName}),'%')
+        </if>
+        ORDER BY p.application_time DESC
+    </select>
+
+    <resultMap type="com.whalecloud.domain.Progress" id="telecomUnfinishedByCondition">
+        <result property="resourceName" column="resource_name"/>
+        <result property="resourceId" column="resource_id"/>
+        <result property="applicationType" column="application_type"/>
+        <result property="taskId" column="task_id"/>
+        <result property="areaCode" column="area_code"/>
+        <result property="lessee" column="lessee"/>
+        <result property="applicationTime" column="application_time"/>
+        <result property="progress" column="progress"/>
+    </resultMap>
+    <select id="getTelecomUnfinishedByCondition" parameterType="java.lang.String"
+            resultMap="telecomUnfinishedByCondition">
+        SELECT
+        p.resource_name,p.resource_id,p.task_id,r.resource_type,p.lessee,p.application_type,p.application_time,p.progress
+        FROM res_progress p,res_detail r
+        WHERE p.resource_id=r.resource_id AND r.owner='ChinaTelecom' AND p.progress = '0'
+        <if test="resourceType !=null">
+            AND r.resource_type = #{resourceType}
+        </if>
+        <if test="applicationType !=null">
+            AND p.application_type = #{applicationType}
+        </if>
+        <if test="resourceName != null">
+            AND p.resource_name LIKE concat('%',concat(#{resourceName}),'%')
+        </if>
+        ORDER BY p.application_time DESC
+    </select>
+
+    <resultMap type="com.whalecloud.domain.Progress" id="telecomFinishedByCondition">
+        <result property="resourceName" column="resource_name"/>
+        <result property="resourceId" column="resource_id"/>
+        <result property="applicationType" column="application_type"/>
+        <result property="taskId" column="task_id"/>
+        <result property="areaCode" column="area_code"/>
+        <result property="lessee" column="lessee"/>
+        <result property="applicationTime" column="application_time"/>
+        <result property="progress" column="progress"/>
+    </resultMap>
+    <select id="getTelecomFinishedByCondition" parameterType="java.lang.String" resultMap="telecomFinishedByCondition">
+        SELECT
+        p.resource_name,p.resource_id,p.task_id,r.resource_type,p.lessee,p.application_type,p.application_time,p.progress
+        FROM res_progress p,res_detail r
+        WHERE p.resource_id=r.resource_id AND r.owner='ChinaTelecom' AND p.progress != '0'
+        <if test="resourceType !=null">
+            AND r.resource_type = #{resourceType}
+        </if>
+        <if test="applicationType !=null">
+            AND p.application_type = #{applicationType}
+        </if>
+        <if test="resourceName != null">
+            AND p.resource_name LIKE concat('%',concat(#{resourceName}),'%')
+        </if>
+        ORDER BY p.application_time DESC
+    </select>
+
+    <resultMap type="com.whalecloud.domain.Progress" id="telecomApplyByCondition">
+        <result property="resourceName" column="resource_name"/>
+        <result property="resourceId" column="resource_id"/>
+        <result property="applicationType" column="application_type"/>
+
+        <result property="taskId" column="task_id"/>
+        <result property="areaCode" column="area_code"/>
+        <result property="lessee" column="lessee"/>
+        <result property="applicationTime" column="application_time"/>
+        <result property="progress" column="progress"/>
+    </resultMap>
+    <select id="getTelecomApplyByCondition" parameterType="java.lang.String" resultMap="telecomApplyByCondition">
+        SELECT
+        p.resource_name,p.resource_id,p.task_id,r.resource_type,p.lessee,p.application_type,p.application_time,p.progress
+        FROM res_progress p,res_detail r
+        WHERE p.resource_id=r.resource_id AND r.owner='ChinaUnicom'
+        <if test="resourceType !=null">
+            AND r.resource_type = #{resourceType}
+        </if>
+        <if test="applicationType !=null">
+            AND p.application_type = #{applicationType}
+        </if>
+        <if test="resourceName != null">
+            AND p.resource_name LIKE concat('%',concat(#{resourceName}),'%')
+        </if>
+        ORDER BY p.application_time DESC
+    </select>
+
+    <resultMap type="com.whalecloud.dto.ProgressDetail" id="progressByTaskId">
+        <result property="applicationTime" column="application_time"/>
+        <result property="applicationType" column="application_type"/>
+        <result property="effectiveTime" column="effective_time"/>
+
+        <result property="lessee" column="lessee"/>
+        <result property="lessor" column="lessor"/>
+        <result property="processTime" column="process_time"/>
+        <result property="progress" column="progress"/>
+        <result property="resourceId" column="resource_id"/>
+        <result property="resourceName" column="resource_name"/>
+        <result property="taskId" column="task_id"/>
+    </resultMap>
+    <select id="getProgressByTaskId" parameterType="java.lang.String" resultMap="progressByTaskId">
+        SELECT application_time,application_type,effective_time,lessee,lessor,
+	            process_time,progress,resource_id,resource_name,task_id
+        FROM res_progress
+        WHERE task_id=#{taskId}
+    </select>
+</mapper>

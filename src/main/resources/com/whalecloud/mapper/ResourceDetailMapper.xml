@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.whalecloud.mapper.re.ResourceDetailMapper">
+
+    <select id="getOne" resultType="com.whalecloud.domain.re.ResDetail" parameterType="java.lang.String">
+        SELECT * FROM res_detail WHERE 1=1 AND resource_id = #{resourcesId}
+    </select>
+
+    <select id="getFiveInfo" resultType="com.whalecloud.domain.re.ResDetail">
+        SELECT * FROM res_detail WHERE res_detail.YN = 0 ORDER BY res_detail.effective_time DESC LIMIT 5
+    </select>
+
+
+    <select id="getAll" resultType="com.whalecloud.domain.re.ResDetail">
+        SELECT * FROM res_detail WHERE res_detail.YN = 0
+    </select>
+</mapper>

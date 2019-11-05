@@ -1,0 +1,492 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.whalecloud.mapper.re.CountMapper" >
+
+
+
+  <select id="getTotalCount" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT count(id) from res_detail WHERE resource_type=#{resourceType}
+  </select>
+
+  <select id="getUnicomCount" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND owner = 'ChinaUnicom'
+  </select>
+
+  <select id="getTelecomCount" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND owner = 'ChinaTelecom'
+  </select>
+
+  <select id="getUnicomUsing" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND status = '0' AND owner = 'ChinaUnicom'
+  </select>
+
+  <select id="getUnicomBuilding" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND status = '1' AND owner = 'ChinaUnicom'
+  </select>
+  <select id="getUnicomPlaning" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND status = '2' AND owner = 'ChinaUnicom'
+  </select>
+  <select id="getUnicomMaintenance" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND status = '3' AND owner = 'ChinaUnicom'
+  </select>
+  <select id="getTelecomUsing" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND status = '0' AND owner = 'ChinaTelecom'
+  </select>
+  <select id="getTelecomBuilding" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND status = '1' AND owner = 'ChinaTelecom'
+  </select>
+  <select id="getTelecomPlaning" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND status = '2' AND owner = 'ChinaTelecom'
+  </select>
+  <select id="getTelecomMaintenance" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND status = '3' AND owner = 'ChinaTelecom'
+  </select>
+
+
+  <select id="getUnicomRentInJanuary" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) '1月' FROM res_progress WHERE resource_type=#{resourceType} AND lessee='ChinaUnicom' AND DATE_FORMAT(effective_time,'%Y%m')='201901'
+  </select>
+  <select id="getUnicomRentInFebruary" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) '2月' FROM res_progress WHERE resource_type=#{resourceType} AND lessee='ChinaUnicom' AND DATE_FORMAT(effective_time,'%Y%m')='201902'
+  </select>
+
+  <select id="getUnicomRentInMarch" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) '3月' FROM res_progress WHERE resource_type=#{resourceType} AND lessee='ChinaUnicom' AND DATE_FORMAT(effective_time,'%Y%m')='201903'
+  </select>
+
+  <select id="getUnicomRentInApril" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) '4月' FROM res_progress WHERE resource_type=#{resourceType} AND lessee='ChinaUnicom' AND DATE_FORMAT(effective_time,'%Y%m')='201904'
+  </select>
+
+  <select id="getUnicomRentInMay" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) '5月' FROM res_progress WHERE resource_type=#{resourceType} AND lessee='ChinaUnicom' AND DATE_FORMAT(effective_time,'%Y%m')='201905'
+  </select>
+
+  <select id="getUnicomRentInJune" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) '6月' FROM res_progress WHERE resource_type=#{resourceType} AND lessee='ChinaUnicom' AND DATE_FORMAT(effective_time,'%Y%m')='201906'
+  </select>
+
+  <select id="getUnicomRentInJuly" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) '7月' FROM res_progress WHERE resource_type=#{resourceType} AND lessee='ChinaUnicom' AND DATE_FORMAT(effective_time,'%Y%m')='201907'
+  </select>
+
+  <select id="getUnicomRentInAugust" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) '8月' FROM res_progress WHERE resource_type=#{resourceType} AND lessee='ChinaUnicom' AND DATE_FORMAT(effective_time,'%Y%m')='201908'
+  </select>
+
+  <select id="getUnicomRentInSeptember" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) '9月' FROM res_progress WHERE resource_type=#{resourceType} AND lessee='ChinaUnicom' AND DATE_FORMAT(effective_time,'%Y%m')='201909'
+  </select>
+
+  <select id="getUnicomRentInOctober" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) '10月' FROM res_progress WHERE resource_type=#{resourceType} AND lessee='ChinaUnicom' AND DATE_FORMAT(effective_time,'%Y%m')='201910'
+  </select>
+
+  <select id="getUnicomRentInNovember" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) '11月' FROM res_progress WHERE resource_type=#{resourceType} AND lessee='ChinaUnicom' AND DATE_FORMAT(effective_time,'%Y%m')='201911'
+  </select>
+
+  <select id="getUnicomRentInDecember" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) '12月' FROM res_progress WHERE resource_type=#{resourceType} AND lessee='ChinaUnicom' AND DATE_FORMAT(effective_time,'%Y%m')='201912'
+  </select>
+
+  <select id="getTelecomRentInJanuary" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) '1月' FROM res_progress WHERE resource_type=#{resourceType} AND lessee='ChinaTelecom' AND DATE_FORMAT(effective_time,'%Y%m')='201901'
+  </select>
+  <select id="getTelecomRentInFebruary" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) '2月' FROM res_progress WHERE resource_type=#{resourceType} AND lessee='ChinaTelecom' AND DATE_FORMAT(effective_time,'%Y%m')='201902'
+  </select>
+
+  <select id="getTelecomRentInMarch" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) '3月' FROM res_progress WHERE resource_type=#{resourceType} AND lessee='ChinaTelecom' AND DATE_FORMAT(effective_time,'%Y%m')='201903'
+  </select>
+
+  <select id="getTelecomRentInApril" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) '4月' FROM res_progress WHERE resource_type=#{resourceType} AND lessee='ChinaTelecom' AND DATE_FORMAT(effective_time,'%Y%m')='201904'
+  </select>
+
+  <select id="getTelecomRentInMay" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) '5月' FROM res_progress WHERE resource_type=#{resourceType} AND lessee='ChinaTelecom' AND DATE_FORMAT(effective_time,'%Y%m')='201905'
+  </select>
+
+  <select id="getTelecomRentInJune" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) '6月' FROM res_progress WHERE resource_type=#{resourceType} AND lessee='ChinaTelecom' AND DATE_FORMAT(effective_time,'%Y%m')='201906'
+  </select>
+
+  <select id="getTelecomRentInJuly" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) '7月' FROM res_progress WHERE resource_type=#{resourceType} AND lessee='ChinaTelecom' AND DATE_FORMAT(effective_time,'%Y%m')='201907'
+  </select>
+
+  <select id="getTelecomRentInAugust" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) '8月' FROM res_progress WHERE resource_type=#{resourceType} AND lessee='ChinaTelecom' AND DATE_FORMAT(effective_time,'%Y%m')='201908'
+  </select>
+
+  <select id="getTelecomRentInSeptember" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) '9月' FROM res_progress WHERE resource_type=#{resourceType} AND lessee='ChinaTelecom' AND DATE_FORMAT(effective_time,'%Y%m')='201909'
+  </select>
+
+  <select id="getTelecomRentInOctober" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) '10月' FROM res_progress WHERE resource_type=#{resourceType} AND lessee='ChinaTelecom' AND DATE_FORMAT(effective_time,'%Y%m')='201910'
+  </select>
+
+  <select id="getTelecomRentInNovember" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) '11月' FROM res_progress WHERE resource_type=#{resourceType} AND lessee='ChinaTelecom' AND DATE_FORMAT(effective_time,'%Y%m')='201911'
+  </select>
+
+  <select id="getTelecomRentInDecember" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) '12月' FROM res_progress WHERE resource_type=#{resourceType} AND lessee='ChinaTelecom' AND DATE_FORMAT(effective_time,'%Y%m')='201912'
+  </select>
+
+  <resultMap type="com.whalecloud.domain.Progress" id="unicomRentDetailByCondition">
+    <result property="resourceName" column="resource_name"/>
+    <result property="owner" column="owner"/>
+
+    <result property="lessor" column="lessor"/>
+    <result property="leaseStatus" column="lease_status"/>
+    <result property="status" column="status"/>
+    <result property="areaCode" column="area_code"/>
+    <result property="effectiveTime" column="effective_time"/>
+  </resultMap>
+  <select id="getUnicomRentDetailByCondition" parameterType="java.lang.String" resultMap="unicomRentDetailByCondition">
+    (SELECT resource_name,owner,lessor,lease_status,status,area_code,effective_time
+    FROM res_detail
+    WHERE lessee='ChinaUnicom' AND lease_status=0 AND resource_type=#{resourceType}
+    <if test="resourceName !=null">
+      AND resource_name LIKE concat('%',concat(#{resourceName}),'%')
+    </if>
+    <if test="leaseStatus != null">
+      AND lease_status =#{leaseStatus}
+    </if>
+    <if test="status != null">
+      AND status =#{status}
+    </if>)
+    UNION ALL
+    (SELECT resource_name,owner,lessor,lease_status,status,area_code,effective_time
+    FROM res_detail
+    WHERE lessor='ChinaUnicom' AND lease_status=2 AND resource_type=#{resourceType}
+    <if test="resourceName !=null">
+      AND resource_name LIKE concat('%',concat(#{resourceName}),'%')
+    </if>
+    <if test="leaseStatus != null">
+      AND lease_status =#{leaseStatus}
+    </if>
+    <if test="status != null">
+      AND status =#{status}
+    </if>)
+  </select>
+
+  <resultMap type="com.whalecloud.domain.Progress" id="telecomRentDetailByCondition">
+    <result property="resourceName" column="resource_name"/>
+    <result property="owner" column="owner"/>
+
+    <result property="lessor" column="lessor"/>
+    <result property="leaseStatus" column="lease_status"/>
+    <result property="status" column="status"/>
+    <result property="areaCode" column="area_code"/>
+    <result property="effectiveTime" column="effective_time"/>
+  </resultMap>
+  <select id="getTelecomRentDetailByCondition" parameterType="java.lang.String" resultMap="telecomRentDetailByCondition">
+      (SELECT resource_name,owner,lessor,lease_status,status,area_code,effective_time
+    FROM res_detail
+    WHERE lessee='ChinaTelecom' AND lease_status=0 AND resource_type=#{resourceType}
+    <if test="resourceName !=null">
+      AND resource_name LIKE concat('%',concat(#{resourceName}),'%')
+    </if>
+    <if test="leaseStatus != null">
+      AND lease_status =#{leaseStatus}
+    </if>
+    <if test="status != null">
+      AND status =#{status}
+    </if>)
+    UNION ALL
+    (SELECT resource_name,owner,lessor,lease_status,status,area_code,effective_time
+    FROM res_detail
+    WHERE lessor='ChinaTelecom' AND lease_status=2 AND resource_type=#{resourceType}
+    <if test="resourceName !=null">
+      AND resource_name LIKE concat('%',concat(#{resourceName}),'%')
+    </if>
+    <if test="leaseStatus != null">
+      AND lease_status =#{leaseStatus}
+    </if>
+    <if test="status != null">
+      AND status =#{status}
+    </if>)
+  </select>
+
+
+  <select id="getUnicomRentIn" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND lessee='ChinaUnicom' AND lease_status=0
+  </select>
+  <select id="getUnicomRentOut" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND lessor='ChinaUnicom' AND lease_status=2
+  </select>
+  <select id="getTelecomRentIn" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND lessee='ChinaTelecom' AND lease_status=0
+  </select>
+  <select id="getTelecomRentOut" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND lessor='ChinaTelecom' AND lease_status=2
+  </select>
+
+
+
+
+  <select id="getDC" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'DC'
+  </select>
+  <select id="getDCUse" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'DC' AND STATUS= '0'
+  </select>
+  <select id="getDCBuild" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'DC' AND STATUS= '1'
+  </select>
+  <select id="getDCPlan" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'DC' AND STATUS= '2'
+  </select>
+  <select id="getDCMaintain" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'DC' AND STATUS= '3'
+  </select>
+
+
+  <select id="getYQ" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'YQ'
+  </select>
+  <select id="getYQUse" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'YQ' AND STATUS= '0'
+  </select>
+  <select id="getYQBuild" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'YQ' AND STATUS= '1'
+  </select>
+  <select id="getYQPlan" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'YQ' AND STATUS= '2'
+  </select>
+  <select id="getYQMaintain" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'YQ' AND STATUS= '3'
+  </select>
+
+  <select id="getHR" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'HR'
+  </select>
+  <select id="getHRUse" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'HR' AND STATUS= '0'
+  </select>
+  <select id="getHRBuild" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'HR' AND STATUS= '1'
+  </select>
+  <select id="getHRPlan" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'HR' AND STATUS= '2'
+  </select>
+  <select id="getHRMaintain" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'HR' AND STATUS= '3'
+  </select>
+
+  <select id="getMY" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'MY'
+  </select>
+  <select id="getMYUse" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'MY' AND STATUS= '0'
+  </select>
+  <select id="getMYBuild" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'MY' AND STATUS= '1'
+  </select>
+  <select id="getMYPlan" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'MY' AND STATUS= '2'
+  </select>
+  <select id="getMYMaintain" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'MY' AND STATUS= '3'
+  </select>
+
+  <select id="getCP" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'CP'
+  </select>
+  <select id="getCPUse" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'CP' AND STATUS= '0'
+  </select>
+  <select id="getCPBuild" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'CP' AND STATUS= '1'
+  </select>
+  <select id="getCPPlan" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'CP' AND STATUS= '2'
+  </select>
+  <select id="getCPMaintain" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'CP' AND STATUS= '3'
+  </select>
+
+  <select id="getSY" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'SY'
+  </select>
+  <select id="getSYUse" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'SY' AND STATUS= '0'
+  </select>
+  <select id="getSYBuild" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'SY' AND STATUS= '1'
+  </select>
+  <select id="getSYPlan" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'SY' AND STATUS= '2'
+  </select>
+  <select id="getSYMaintain" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'SY' AND STATUS= '3'
+  </select>
+
+  <select id="getPG" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'PG'
+  </select>
+  <select id="getPGUse" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'PG' AND STATUS= '0'
+  </select>
+  <select id="getPGBuild" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'PG' AND STATUS= '1'
+  </select>
+  <select id="getPGPlan" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'PG' AND STATUS= '2'
+  </select>
+  <select id="getPGMaintain" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'PG' AND STATUS= '3'
+  </select>
+
+  <select id="getMTG" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'MTG'
+  </select>
+  <select id="getMTGUse" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'MTG' AND STATUS= '0'
+  </select>
+  <select id="getMTGBuild" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'MTG' AND STATUS= '1'
+  </select>
+  <select id="getMTGPlan" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'MTG' AND STATUS= '2'
+  </select>
+  <select id="getMTGMaintain" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'MTG' AND STATUS= '3'
+  </select>
+
+  <select id="getHD" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'HD'
+  </select>
+  <select id="getHDUse" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'HD' AND STATUS= '0'
+  </select>
+  <select id="getHDBuild" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'HD' AND STATUS= '1'
+  </select>
+  <select id="getHDPlan" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'HD' AND STATUS= '2'
+  </select>
+  <select id="getHDMaintain" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'HD' AND STATUS= '3'
+  </select>
+
+  <select id="getSJS" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'SJS'
+  </select>
+  <select id="getSJSUse" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'SJS' AND STATUS= '0'
+  </select>
+  <select id="getSJSBuild" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'SJS' AND STATUS= '1'
+  </select>
+  <select id="getSJSPlan" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'SJS' AND STATUS= '2'
+  </select>
+  <select id="getSJSMaintain" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'SJS' AND STATUS= '3'
+  </select>
+
+  <select id="getXC" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'XC'
+  </select>
+  <select id="getXCUse" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'XC' AND STATUS= '0'
+  </select>
+  <select id="getXCBuild" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'XC' AND STATUS= '1'
+  </select>
+  <select id="getXCPlan" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'XC' AND STATUS= '2'
+  </select>
+  <select id="getXCMaintain" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'XC' AND STATUS= '3'
+  </select>
+
+  <select id="getCY" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'CY'
+  </select>
+  <select id="getCYUse" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'CY' AND STATUS= '0'
+  </select>
+  <select id="getCYBuild" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'CY' AND STATUS= '1'
+  </select>
+  <select id="getCYPlan" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'CY' AND STATUS= '2'
+  </select>
+  <select id="getCYMaintain" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'CY' AND STATUS= '3'
+  </select>
+
+  <select id="getTZ" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'TZ'
+  </select>
+  <select id="getTZUse" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'TZ' AND STATUS= '0'
+  </select>
+  <select id="getTZBuild" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'TZ' AND STATUS= '1'
+  </select>
+  <select id="getTZPlan" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'TZ' AND STATUS= '2'
+  </select>
+  <select id="getTZMaintain" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'TZ' AND STATUS= '3'
+  </select>
+
+  <select id="getDX" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'DX'
+  </select>
+  <select id="getDXUse" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'DX' AND STATUS= '0'
+  </select>
+  <select id="getDXBuild" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'DX' AND STATUS= '1'
+  </select>
+  <select id="getDXPlan" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'DX' AND STATUS= '2'
+  </select>
+  <select id="getDXMaintain" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'DX' AND STATUS= '3'
+  </select>
+
+  <select id="getFS" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'FS'
+  </select>
+  <select id="getFSUse" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'FS' AND STATUS= '0'
+  </select>
+  <select id="getFSBuild" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'FS' AND STATUS= '1'
+  </select>
+  <select id="getFSPlan" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'FS' AND STATUS= '2'
+  </select>
+  <select id="getFSMaintain" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'FS' AND STATUS= '3'
+  </select>
+
+  <select id="getFT" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'FT'
+  </select>
+  <select id="getFTUse" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'FT' AND STATUS= '0'
+  </select>
+  <select id="getFTBuild" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'FT' AND STATUS= '1'
+  </select>
+  <select id="getFTPlan" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'FT' AND STATUS= '2'
+  </select>
+  <select id="getFTMaintain" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'FT' AND STATUS= '3'
+  </select>
+
+
+
+</mapper>
