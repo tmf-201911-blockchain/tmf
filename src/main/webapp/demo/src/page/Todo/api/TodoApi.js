@@ -39,6 +39,8 @@ function getUnicomApply(params, method) {
     getUrl = 'progress/getUnicomApplyByCondition';
   } else if (state.userInfo.role == 'Telecom') {
     getUrl = 'progress/getTelecomApplyByCondition';
+  } else {
+    getUrl = 'rent/getInvestorApply';
   }
   return service({
     url: getUrl,

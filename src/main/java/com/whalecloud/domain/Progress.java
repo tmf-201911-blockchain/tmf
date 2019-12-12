@@ -22,6 +22,8 @@ public class Progress implements Serializable {
     private String progress;
     private String processTime;
 
+    private String resourceType;
+
 
     private static final long serialVersionUID = 1L;
 
@@ -148,4 +150,13 @@ public class Progress implements Serializable {
     public void setProcessTime(String processTime) {
         this.processTime = processTime;
     }
+
+    public String getResourceType() {
+        return resourceType;
+    }
+
+    public void setResourceType(String resourceType) {
+        this.resourceType = resourceType;
+    }
+
 }

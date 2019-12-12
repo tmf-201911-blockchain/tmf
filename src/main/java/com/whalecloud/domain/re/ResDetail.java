@@ -20,6 +20,8 @@ public class ResDetail implements Serializable {
 
     private String lessee;
 
+    private String isp;
+
     private String investmentCost;
 
     private Date effectiveTime;
@@ -51,6 +53,8 @@ public class ResDetail implements Serializable {
     private Integer yn;
 
     private Date deadline;
+
+    private String deadlineTime;
 
     private static final long serialVersionUID = 1L;
 
@@ -116,6 +120,14 @@ public class ResDetail implements Serializable {
 
     public void setLessee(String lessee) {
         this.lessee = lessee == null ? null : lessee.trim();
+    }
+
+    public String getIsp() {
+        return isp;
+    }
+
+    public void setIsp(String isp) {
+        this.isp = isp == null ? null : isp.trim();
     }
 
     public String getInvestmentCost() {
@@ -244,5 +256,15 @@ public class ResDetail implements Serializable {
 
     public void setDeadline(Date deadline) {
         this.deadline = deadline;
+    }
+
+
+    public String getDeadlineTime() {
+
+        return deadlineTime;
+    }
+
+    public void setDeadlineTime(String deadlineTime) {
+        this.deadlineTime = deadlineTime;
     }
 }

@@ -37,6 +37,137 @@ public class ReportResDto {
 
     private String areaCode;
 
+    private String resourceType;
+
+    private Integer importance;
+
+    private String latitude;
+
+    private String longitude;
+
+    private String address;
+
+    private String resourcePath;
+
+    private Integer status;
+
+    /**
+     * 上传速率
+     */
+    private String UploadRate;
+    /**
+     * 下载速率
+     */
+    private String DownloadRate;
+    /**
+     * 网络延迟
+     */
+    private String NetworkDelay;
+    /**
+     * 调用连接速率
+     */
+    private String CallingConnectionRate;
+    /**
+     * 语音拨号速率
+     */
+    private String VoiceDropRate;
+
+    public String getUploadRate() {
+        return UploadRate;
+    }
+
+    public void setUploadRate(String uploadRate) {
+        UploadRate = uploadRate;
+    }
+
+    public String getDownloadRate() {
+        return DownloadRate;
+    }
+
+    public void setDownloadRate(String downloadRate) {
+        DownloadRate = downloadRate;
+    }
+
+    public String getNetworkDelay() {
+        return NetworkDelay;
+    }
+
+    public void setNetworkDelay(String networkDelay) {
+        NetworkDelay = networkDelay;
+    }
+
+    public String getCallingConnectionRate() {
+        return CallingConnectionRate;
+    }
+
+    public void setCallingConnectionRate(String callingConnectionRate) {
+        CallingConnectionRate = callingConnectionRate;
+    }
+
+    public String getVoiceDropRate() {
+        return VoiceDropRate;
+    }
+
+    public void setVoiceDropRate(String voiceDropRate) {
+        VoiceDropRate = voiceDropRate;
+    }
+
+    public String getResourceType() {
+        return resourceType;
+    }
+
+    public void setResourceType(String resourceType) {
+        this.resourceType = resourceType;
+    }
+
+    public Integer getImportance() {
+        return importance;
+    }
+
+    public void setImportance(Integer importance) {
+        this.importance = importance;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getResourcePath() {
+        return resourcePath;
+    }
+
+    public void setResourcePath(String resourcePath) {
+        this.resourcePath = resourcePath;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
     public String getAreaCode() {
         return areaCode;
     }

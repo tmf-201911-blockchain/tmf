@@ -17,17 +17,22 @@
   import FooterNav from './Menu/footerNav';
   import { mapState, mapMutations } from 'vuex';
 
-
+  import TodoApi from './Todo/api/TodoApi';
+  import Api from './OpsAndMaintenance/api/index'
 
 
   export default {
     name: 'Index',
     data(){
       return {
+        pageConfig: {
+          pageNum: 1,
+          pageSize: 10,
+        },
       }
     },
     computed:{
-      ...mapState(['toggleSider']),
+      ...mapState(['toggleSider', 'userInfo']),
     },
     components:{
       HeadNav,
@@ -38,21 +43,39 @@
     },
     methods: {
       getUnicomUnfinished() {
-        TodoApi.getUnicomUnfinished(params).then(result => {
-          const {list = [] } = result;
-          if (list.length > 0) {
-            this.$store.commit('IS_HAS_APPROVAL', true);
-          } else {
-            this.$store.commit('IS_HAS_APPROVAL', false);
-          }
-        }).catch(error => {
-          console.log(error);
-        })
+        if (this.userInfo.Operator) {
+          TodoApi.getUnicomUnfinished({ ...this.pageConfig }).then(result => {
+            const {list = [] } = result;
+            if (list.length > 0) {
+              this.$store.commit('IS_HAS_APPROVAL', true);
+            } else {
+              this.$store.commit('IS_HAS_APPROVAL', false);
+            }
+          }).catch(error => {
+            console.log(error);
+          })
+        }
+      },
+      fetchList() {
+        if (this.userInfo.Operator) {
+          Api.fetchList({ ...this.pageConfig }).then(result => {
+            const { data = {} } = result;
+            const { list = [], pages = 0, total = 0 } = data;
+            if (list.length > 0) {
+              this.$store.commit('IS_HAS_INPROGRESS', true);
+            } else {
+              this.$store.commit('IS_HAS_INPROGRESS', false);
+            }
+          }).catch(error => {
+            console.log(error);
+          })
+        }
       },
 
     },
     mounted (){
-
+      this.getUnicomUnfinished();
+      this.fetchList();
     },
     watch:{
 
@@ -68,15 +91,17 @@
       right: 0;
       top: 0px;
       bottom: 0;
+      background: rgb(243, 246, 254);
     }
     .menu_right.is-active {
       left: 64px;
     }
     .menu_content {
       width: 100%;
-      height: calc(100% - 64px);
+      height: 87%;
+      /*height: calc(100% - 64px);*/
       overflow: hidden;
-      overflow-y: scroll;
+      /*overflow-y: scroll;*/
     }
   }
 </style>

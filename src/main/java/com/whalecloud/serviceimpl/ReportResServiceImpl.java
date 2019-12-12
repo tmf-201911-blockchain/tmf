@@ -4,12 +4,15 @@ import com.google.gson.Gson;
 import com.whalecloud.domain.OpsInfo;
 import com.whalecloud.domain.ReportInfoResponse;
 import com.whalecloud.domain.ReportResDto;
+import com.whalecloud.domain.ReportResWithSpeed;
 import com.whalecloud.domain.re.ReportRes;
 import com.whalecloud.domain.re.ReportResExample;
 import com.whalecloud.domain.re.ResDetail;
+import com.whalecloud.dto.BaseStationSpeed;
+import com.whalecloud.dto.blockchain.code.AccessRecordInformation;
+import com.whalecloud.dto.blockchain.quotation.ReportBlock;
 import com.whalecloud.dto.enumdto.TreatmentStateEnum;
 import com.whalecloud.dto.enumdto.YNEnum;
-import com.whalecloud.dto.blockchain.code.AccessRecordInformation;
 import com.whalecloud.mapper.re.ReportResMapper;
 import com.whalecloud.service.ReportResService;
 import com.whalecloud.service.ResourcesService;
@@ -41,6 +44,27 @@ public class ReportResServiceImpl implements ReportResService {
     @Autowired
     ResourcesService resourcesService;
 
+
+    @Override
+    public void cochain(String taskId) throws Exception {
+        //得到这条信息
+        ReportResDto oneByTaskId = getOneByTaskId(taskId);
+
+        Gson gson = new Gson();
+        //区块链--用户评论
+        HttpParamers paramers = HttpParamers.httpPostParamers();
+        ReportBlock reportBlock = CommonUtil.fitReport(oneByTaskId);
+        String objectOneJson = gson.toJson(reportBlock);
+        paramers.setJsonParamer(objectOneJson);
+        String response1 = "";
+        try {
+            HttpService httpService = new HttpService("http://39.99.148.130:8013");
+            response1 = httpService.service("/api/createReport", paramers);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public ReportInfoResponse report(ReportRes dto) throws Exception {
 
@@ -49,8 +73,12 @@ public class ReportResServiceImpl implements ReportResService {
         dto.setReportTime(new Date());
         dto.setCreateTime(new Date());
         dto.setUpdateTime(new Date());
-        //待解决状态
-        dto.setTreatmentState(TreatmentStateEnum.pending.getCode());
+        //待解决状态--如果是手机评论就是待解决
+        if (StringUtils.isEmpty(dto.getPhone())) {
+            dto.setTreatmentState(TreatmentStateEnum.marked.getCode());
+        } else {
+            dto.setTreatmentState(TreatmentStateEnum.pending.getCode());
+        }
         dto.setYn(YNEnum.NO.getCode());
         reportResMapper.insertSelective(dto);
 
@@ -136,7 +164,8 @@ public class ReportResServiceImpl implements ReportResService {
         }
         Gson gson = new Gson();
         //同意
-        if (isSolved.equals("1")) {
+        String solvedFlag = String.valueOf(isSolved);
+        if (solvedFlag.equals("1")) {
             res.setTreatmentState(TreatmentStateEnum.solved.getCode());
             //区块链--插入行权记录
             HttpParamers paramers = HttpParamers.httpPostParamers();
@@ -197,7 +226,6 @@ public class ReportResServiceImpl implements ReportResService {
         if (!StringUtils.isEmpty(dto.getFeedbackUser())) {
             criteria.andPhoneEqualTo(dto.getFeedbackUser());
         }
-
         List<ReportRes> reportRes = reportResMapper.selectByExample(example);
 
 
@@ -276,6 +304,23 @@ public class ReportResServiceImpl implements ReportResService {
             dto = gson.fromJson(json, ReportResDto.class);
 
             dto.setResourceName(one.getResourceName());
+            dto.setAreaCode(one.getAreaCode());
+            dto.setResourceType(one.getResourceType());
+            dto.setImportance(one.getImportance());
+            dto.setLatitude(one.getLatitude());
+            dto.setLongitude(one.getLongitude());
+            dto.setAddress(one.getAddress());
+            dto.setResourcePath(one.getPath());
+            dto.setStatus(one.getStatus());
+
+            BaseStationSpeed randomOne = CommonUtil.getRandomOne();
+            dto.setUploadRate(randomOne.getUploadRate());
+            dto.setDownloadRate(randomOne.getDownloadRate());
+            dto.setNetworkDelay(randomOne.getNetworkDelay());
+            dto.setCallingConnectionRate(randomOne.getCallingConnectionRate());
+            dto.setVoiceDropRate(randomOne.getVoiceDropRate());
+
+
             return dto;
         } else {
             return null;
@@ -293,6 +338,34 @@ public class ReportResServiceImpl implements ReportResService {
         List<ReportRes> reportRes = reportResMapper.selectByExample(example);
 
         return reportRes;
+    }
+
+    @Override
+    public List<ReportResWithSpeed> showStationReport(String resourceId) throws Exception {
+
+        List<ReportRes> reportResList = getOneByResourceId(resourceId);
+
+        ArrayList<ReportResWithSpeed> resWithSpeeds = new ArrayList<>();
+        Gson gson = new Gson();
+
+        if (reportResList.size() > 0) {
+
+            for (ReportRes res : reportResList) {
+                String json = gson.toJson(res);
+                ReportResWithSpeed resWithSpeed = gson.fromJson(json, ReportResWithSpeed.class);
+
+                //获取随机速率
+                BaseStationSpeed randomOne = CommonUtil.getRandomOne();
+                resWithSpeed.setUploadRate(randomOne.getUploadRate());
+                resWithSpeed.setDownloadRate(randomOne.getDownloadRate());
+                resWithSpeed.setNetworkDelay(randomOne.getNetworkDelay());
+                resWithSpeed.setCallingConnectionRate(randomOne.getCallingConnectionRate());
+                resWithSpeed.setVoiceDropRate(randomOne.getVoiceDropRate());
+                //往List里面塞入数据
+                resWithSpeeds.add(resWithSpeed);
+            }
+        }
+        return resWithSpeeds;
     }
 }
 

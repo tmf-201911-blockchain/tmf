@@ -1,7 +1,6 @@
 package com.whalecloud.domain;
 
 import java.io.Serializable;
-import java.util.Date;
 
 public class RentSettlement implements Serializable {
     //	resource_name,resource_type,OWNER,STATUS,area_code,effective_time,star,rate
@@ -15,7 +14,10 @@ public class RentSettlement implements Serializable {
     private String effectiveTime;
     private Double star;
     private Double rate;
-    private Double actualRate;
+    private String ratePlus;
+
+    private String actualRate;
+
 
     public String getResourceName() {
         return resourceName;
@@ -97,11 +99,19 @@ public class RentSettlement implements Serializable {
         this.rate = rate;
     }
 
-    public Double getActualRate() {
+    public String getActualRate() {
         return actualRate;
     }
 
-    public void setActualRate(Double actualRate) {
+    public void setActualRate(String actualRate) {
         this.actualRate = actualRate;
+    }
+
+    public String getRatePlus() {
+        return ratePlus;
+    }
+
+    public void setRatePlus(String ratePlus) {
+        this.ratePlus = ratePlus;
     }
 }

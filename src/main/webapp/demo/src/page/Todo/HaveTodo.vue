@@ -6,14 +6,17 @@
           :data="tableData"
           style="width: 100%"
           empty-text="Temporarily no data"
+          max-height="400px"
         >
           <el-table-column
             type="index"
             label="ID"
+            align="center"
             :index="indexMethod">
           </el-table-column>
           <el-table-column
             prop="resourceName"
+            align="center"
             label="Resource Applied"
             width="150">
             <template slot-scope="scope">
@@ -22,31 +25,38 @@
           </el-table-column>
           <el-table-column
             prop="resourceId"
+            align="center"
             label="Resource ID"
             width="120">
           </el-table-column>
           <el-table-column
             prop="taskId"
+            align="center"
             label="Task ID">
           </el-table-column>
           <el-table-column
-            prop="areaCode"
-            label="Area Code">
+            prop="resourceType"
+            align="center"
+            label="Resource Type">
           </el-table-column>
           <el-table-column
             prop="lessee"
+            align="center"
             label="Applicant">
           </el-table-column>
           <el-table-column
             prop="applicationTime"
+            align="center"
             label="Application Time">
           </el-table-column>
           <el-table-column
             prop="applicationType"
+            align="center"
             label="Application Type">
           </el-table-column>
           <el-table-column
             prop="progress"
+            align="center"
             label="Status">
           </el-table-column>
           <!--          <el-table-column-->
@@ -149,6 +159,11 @@
             if (item.applicationType) {
               item.applicationType = this.applicationType[item.applicationType];
             }
+            Object.keys(item).forEach(keyItem => {
+              if (!item[keyItem]) {
+                item[keyItem] = '-';
+              }
+            });
           })
           this.tableData = list;
         }).catch(error => {
@@ -159,7 +174,7 @@
         const { resourceId = '', taskId = '' } = item;
         TodoApi.getAllInfo({ resourceId, taskId }).then(result => {
           this.dialogVisible = true;
-          result.dialogTitile = '已办详情';
+          result.dialogTitile = 'Detailed information';
           this.TODO_ITEM(result);
         }).catch(error => {
           console.log(error);

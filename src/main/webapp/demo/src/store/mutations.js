@@ -11,7 +11,10 @@ const mutations = {
     if (newData.effectiveTime) {
       newData.effectiveTime = getCurrentDateStr(newData.effectiveTime);
     }
-    state.todoItem = newData;
+    if (newData.reportTime) {
+      newData.reportTime = getCurrentDateStr(newData.reportTime);
+    }
+    state.todoItem = { ...newData};
 
   },
 
@@ -22,16 +25,27 @@ const mutations = {
 
   // 获取待办事项列表参数
   [types.SEARCH_CRITERIA] (state, newData) {
-    state.searchCriteria = newData;
+    state.searchCriteria = { ...newData };
   },
 
-  // 报存用户信息
+  // 保存用户信息
   [types.USER_INFO] (state, newData) {
-    state.userInfo = newData;
-    if (typeof newData !== 'string') {
-      newData = JSON.stringify(newData);
+    let userInfo = { ...newData };
+    switch (userInfo.role) {
+      case 'Unicom':
+      case 'Telecom':
+        userInfo.Operator = true;
+        break;
+      default:
+        userInfo.Operator = false;
+        break;
     }
-    window.localStorage.setItem('user_info', newData);
+    state.userInfo = userInfo;
+
+    if (typeof userInfo !== 'string') {
+      userInfo = JSON.stringify(userInfo);
+    }
+    window.localStorage.setItem('user_info', userInfo);
   },
 
   // 删除用户信息
@@ -52,6 +66,16 @@ const mutations = {
   //
   [types.IS_HAS_APPROVAL] (state, newData) {
     state.isHasApproval = newData;
+  },
+  [types.IS_HAS_INPROGRESS] (state, newData) {
+    state.isHasInprogress = newData;
+  },
+  [types.RESOURCE_DIALOG_VISIBLEADAT] (state, newData = '') {
+    state.ResourceDialogId = newData;
+    state.ResourceDialogVisibledat = !state.ResourceDialogVisibledat;
+  },
+  [types.ACTUALTOTAL] (state, newData = 0) {
+    state.ActualTotal = newData;
   },
 }
 

@@ -5,19 +5,13 @@
         <span style="margin-right: 4px;font-size:14px;color:rgba(0,0,0,0.45);margin-left: 25px">current position:</span>
         <span style="font-size:14px;color:rgba(0,0,0,0.65);">Application and Approval</span>
       </span>
-    <div style="background: white;margin-left: 24px;overflow-y: scroll;max-height: 622px">
-<!--      <div class="tabView">-->
-<!--        <router-link to="/Index/Todo" class="paddingH">待办</router-link>-->
-<!--        <router-link to="/Index/Todo/HaveTodo" class="paddingH">已办</router-link>-->
-<!--        <router-link to="/Index/Todo/Application" class="paddingH">我的申请</router-link>-->
-<!--      </div>-->
-
+    <div style="background: white;margin-left: 24px;height: 100%">
       <div class="el-tabView">
         <el-tabs v-model="activeName" @tab-click="handleClick">
-          <el-tab-pane label="Pending" name="/Index/Todo">
+          <el-tab-pane label="Pending" name="/Index/Todo"  v-if="userInfo.Operator">
             <el-badge is-dot class="item" slot="label" v-if="isHasApproval">Pending</el-badge>
           </el-tab-pane>
-          <el-tab-pane label="Completed" name="/Index/Todo/HaveTodo"></el-tab-pane>
+          <el-tab-pane label="Completed" name="/Index/Todo/HaveTodo" v-if="userInfo.Operator"></el-tab-pane>
           <el-tab-pane label="My application" name="/Index/Todo/Application"></el-tab-pane>
         </el-tabs>
       </div>
@@ -25,16 +19,22 @@
 
       <div class="Todo-search">
         <div>
-          <div>Resource Applied</div>
+          <div>{{ userInfo.Operator ? 'Resource Applied' : 'Resource Name' }}</div>
           <input placeholder="Input here" v-model="searchCriteria.resourceName"></input>
         </div>
         <div>
-          <div>Task ID</div>
-          <input placeholder="Input here" v-model="searchCriteria.taskId"></input>
+          <div>Resource Typee</div>
+          <el-select v-model="searchCriteria.resourceType" placeholder="Choose">
+            <el-option
+              v-for="item in resourceTypeOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
         </div>
         <div>
           <div>Application Type</div>
-<!--          <select placeholder="Input here" v-model="searchCriteria.taskId"></select>-->
           <el-select v-model="searchCriteria.applicationType" placeholder="Choose">
             <el-option
               v-for="item in options"
@@ -44,8 +44,8 @@
             </el-option>
           </el-select>
         </div>
-        <div class="searchBtn" @click="searchBtn">Confirm</div>
-        <div class="searchBtn cancleBtn" @click="cancleBtn">Cancle</div>
+        <div class="searchBtn" @click="searchBtn">Query</div>
+        <div class="searchBtn cancleBtn" @click="cancleBtn">Reset</div>
       </div>
       <div class="todo-list">
         <router-view></router-view>
@@ -63,14 +63,20 @@
       return {
         activeName: '/Index/Todo',
         searchCriteria: {
-          resourceName: '',
-          taskId: '',
-          applicationType: '',
+          // resourceName: '',
+          // resourceType: '',
+          // applicationType: '',
         },
         options: [
-          { label: '', value: 'Choose' },
+          { label: 'All', value: '' },
           { label: 'Resource application', value: '1' },
           { label: 'Resource termination', value: '2' },
+          { label: 'Investment Application', value: '3' },
+        ],
+        resourceTypeOptions: [
+          { label: 'All', value: '' },
+          { label: 'Base Station', value: 'BaseStation' },
+          { label: 'Tower', value: 'Tower' },
         ],
       };
     },
@@ -79,7 +85,7 @@
         this.$router.push({ path: this.activeName })
       },
       searchBtn() {
-        const { resourceName = '', taskId = '', applicationType = '' } = this.searchCriteria;
+        const { resourceName = '', taskId = '', applicationType = '', resourceType = '' } = this.searchCriteria;
         const params = {};
         if (resourceName) {
           params.resourceName = resourceName;
@@ -90,12 +96,12 @@
         if (applicationType && applicationType != 'Choose') {
           params.applicationType = applicationType;
         }
-        this.$store.commit('SEARCH_CRITERIA', params);
+        this.$store.commit('SEARCH_CRITERIA', this.searchCriteria);
       },
       cancleBtn() {
         this.searchCriteria = {
           resourceName: '',
-          taskId: '',
+          resourceType: '',
           applicationType: '',
         }
         // this.$refs.mySelect.handleClose() 关闭下拉框，有个小问题可能需要用到，暂时先记录
@@ -106,9 +112,9 @@
       $route(to, from) {
         // 当路由变化时，清空搜索条件
         this.searchCriteria = {
-          resourceName: '',
-          taskId: '',
-          applicationType: '',
+          // resourceName: '',
+          // resourceType: '',
+          // applicationType: '',
         }
         const { path = '' } = to;
         this.$store.commit('SEARCH_CRITERIA', {});
@@ -116,7 +122,7 @@
       }
     },
     computed: {
-      ...mapState(['isHasApproval']),
+      ...mapState(['isHasApproval', 'userInfo']),
     }
   }
 </script>

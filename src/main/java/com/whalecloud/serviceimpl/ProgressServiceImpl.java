@@ -90,7 +90,15 @@ public class ProgressServiceImpl implements ProgressService {
     @Override
     public QueryResult<Progress> getUnicomUnfinishedByCondition(String resourceType,String applicationType, String resourceName, Integer pageNum,Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-
+        if (resourceType==null || resourceType.length()==0){
+            resourceType=null;
+        }
+        if (applicationType==null || applicationType.length()==0){
+            applicationType=null;
+        }
+        if (resourceName==null || resourceName.length()==0){
+            resourceName=null;
+        }
         Page<Progress> unicomUnfinishedByCondition = progressMapper.getUnicomUnfinishedByCondition(resourceType, applicationType,resourceName);
         List<Progress> result = unicomUnfinishedByCondition.getResult();
         long total = unicomUnfinishedByCondition.getTotal();
@@ -110,6 +118,15 @@ public class ProgressServiceImpl implements ProgressService {
     @Override
     public QueryResult<Progress> getUnicomFinishedByCondition(String resourceType,String applicationType,  String resourceName, Integer pageNum,Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
+        if (resourceType==null || resourceType.length()==0){
+            resourceType=null;
+        }
+        if (applicationType==null || applicationType.length()==0){
+            applicationType=null;
+        }
+        if (resourceName==null || resourceName.length()==0){
+            resourceName=null;
+        }
         Page<Progress> unicomFinishedByCondition = progressMapper.getUnicomFinishedByCondition(resourceType,applicationType, resourceName);
         List<Progress> result = unicomFinishedByCondition.getResult();
         long total = unicomFinishedByCondition.getTotal();
@@ -129,7 +146,15 @@ public class ProgressServiceImpl implements ProgressService {
     @Override
     public QueryResult<Progress> getUnicomApplyByCondition(String resourceType,String applicationType,  String resourceName, Integer pageNum,Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-
+        if (resourceType==null || resourceType.length()==0){
+            resourceType=null;
+        }
+        if (applicationType==null || applicationType.length()==0){
+            applicationType=null;
+        }
+        if (resourceName==null || resourceName.length()==0){
+            resourceName=null;
+        }
         Page<Progress> unicomApplyByCondition = progressMapper.getUnicomApplyByCondition(resourceType,applicationType, resourceName);
         List<Progress> result = unicomApplyByCondition.getResult();
         long total = unicomApplyByCondition.getTotal();
@@ -149,6 +174,15 @@ public class ProgressServiceImpl implements ProgressService {
     @Override
     public QueryResult<Progress> getTelecomUnfinishedByCondition(String resourceType,String applicationType,  String resourceName, Integer pageNum,Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
+        if (resourceType==null || resourceType.length()==0){
+            resourceType=null;
+        }
+        if (applicationType==null || applicationType.length()==0){
+            applicationType=null;
+        }
+        if (resourceName==null || resourceName.length()==0){
+            resourceName=null;
+        }
         Page<Progress> telecomUnfinishedByCondition = progressMapper.getTelecomUnfinishedByCondition(resourceType,applicationType, resourceName);
         List<Progress> result = telecomUnfinishedByCondition.getResult();
         long total = telecomUnfinishedByCondition.getTotal();
@@ -168,6 +202,15 @@ public class ProgressServiceImpl implements ProgressService {
     @Override
     public QueryResult<Progress> getTelecomFinishedByCondition(String resourceType,String applicationType,  String resourceName, Integer pageNum,Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
+        if (resourceType==null || resourceType.length()==0){
+            resourceType=null;
+        }
+        if (applicationType==null || applicationType.length()==0){
+            applicationType=null;
+        }
+        if (resourceName==null || resourceName.length()==0){
+            resourceName=null;
+        }
         Page<Progress> telecomFinishedByCondition = progressMapper.getTelecomFinishedByCondition(resourceType,applicationType, resourceName);
         List<Progress> result = telecomFinishedByCondition.getResult();
         long total = telecomFinishedByCondition.getTotal();
@@ -188,6 +231,15 @@ public class ProgressServiceImpl implements ProgressService {
     @Override
     public QueryResult<Progress> getTelecomApplyByCondition(String resourceType,String applicationType,  String resourceName, Integer pageNum,Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
+        if (resourceType==null || resourceType.length()==0){
+            resourceType=null;
+        }
+        if (applicationType==null || applicationType.length()==0){
+            applicationType=null;
+        }
+        if (resourceName==null || resourceName.length()==0){
+            resourceName=null;
+        }
         Page<Progress> telecomApplyByCondition = progressMapper.getTelecomApplyByCondition(resourceType, applicationType,resourceName);
         List<Progress> result = telecomApplyByCondition.getResult();
         long total = telecomApplyByCondition.getTotal();
@@ -203,6 +255,7 @@ public class ProgressServiceImpl implements ProgressService {
         return queryResult;
     }
 
+    //第三方申请建站审批
     @Override
     public int updatePlaning(String investmentCost, String progress, String opinion,String taskId) {
         if (investmentCost == null || taskId == null) {
@@ -215,7 +268,7 @@ public class ProgressServiceImpl implements ProgressService {
 
         int i = progressMapper.updatePlaning(investmentCost, progress,opinion,taskId);
 
-        //区块链  资源终止审批
+        //区块链
         ProgressDetail progressDetail=progressMapper.getProgressByTaskId(taskId);
         HttpParamers paramers = HttpParamers.httpPostParamers();
 
@@ -231,4 +284,5 @@ public class ProgressServiceImpl implements ProgressService {
 
         return i;
     }
+
 }

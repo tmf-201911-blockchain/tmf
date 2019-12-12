@@ -1,6 +1,7 @@
 package com.whalecloud.controller;
 
 import com.google.gson.Gson;
+import com.whalecloud.domain.ReportResWithSpeed;
 import com.whalecloud.domain.ResAllInfo;
 import com.whalecloud.domain.ResDetailDto;
 import com.whalecloud.domain.re.ReportRes;
@@ -227,7 +228,10 @@ public class ResourcesController {
 
             resDetailDto.setReportRes(reportRes);
         }
-
+        //塞入时间戳
+        if (!StringUtils.isEmpty(detail.getDeadline())) {
+            resDetailDto.setQuotationDeadline(detail.getDeadline().getTime());
+        }
         String jsonString = gson.toJson(resDetailDto);
         return jsonString;
     }
@@ -440,6 +444,10 @@ public class ResourcesController {
         ApplyEndCount applyEndCount = new ApplyEndCount();
         applyEndCount.setApplyCount(applyCount);
         applyEndCount.setOwner(one.getOwner());
+        if (!StringUtils.isEmpty(one.getIsp())) {
+            applyEndCount.setIsp(one.getIsp());
+        }
+        applyEndCount.setState(one.getStatus());
         Gson gson = new Gson();
         String jsonString = gson.toJson(applyEndCount);
 
@@ -464,7 +472,15 @@ public class ResourcesController {
 
         try {
             int i = resourcesService.haveApplied(resourceId, userName);
-            String json = gson.toJson(new Respsonse("200", "OK", i));
+            ResDetail one = resourcesService.getOne(resourceId);
+
+            ApplyEndCount applyEndCount = new ApplyEndCount();
+            applyEndCount.setApplyCount(i);
+            applyEndCount.setOwner(one.getOwner());
+            if (!StringUtils.isEmpty(one.getIsp())) {
+                applyEndCount.setIsp(one.getIsp());
+            }
+            String json = gson.toJson(new Respsonse("200", "OK", applyEndCount));
             return json;
         } catch (Exception e) {
             String json = gson.toJson(new Respsonse("404", "error"));
@@ -490,7 +506,15 @@ public class ResourcesController {
 
         try {
             int i = resourcesService.haveApplyEnd(resourceId, userName);
-            String json = gson.toJson(new Respsonse("200", "OK", i));
+            ResDetail one = resourcesService.getOne(resourceId);
+
+            ApplyEndCount applyEndCount = new ApplyEndCount();
+            applyEndCount.setApplyCount(i);
+            applyEndCount.setOwner(one.getOwner());
+            if (!StringUtils.isEmpty(one.getIsp())) {
+                applyEndCount.setIsp(one.getIsp());
+            }
+            String json = gson.toJson(new Respsonse("200", "OK", applyEndCount));
             return json;
         } catch (Exception e) {
             String json = gson.toJson(new Respsonse("404", "error"));
@@ -499,6 +523,55 @@ public class ResourcesController {
 
     }
 
+    /**
+     *
+     * 上链
+     *
+     * @param response
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "evaluate", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
+    public String evaluate(HttpServletResponse response, String taskId) {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        Gson gson = new Gson();
+        try {
+
+            reportResService.cochain(taskId);
+
+            String json = gson.toJson(new Respsonse("200", "OK"));
+            return json;
+
+        } catch (Exception e) {
+            String json = gson.toJson(new Respsonse("404", "error"));
+            return json;
+        }
+    }
+
+    /**
+     *
+     * 根据基站详情--获取用户报障信息
+     *
+     * @param response
+     * @param resourceId
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "showStationReport", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
+    public String showStationReport(HttpServletResponse response, String resourceId) {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        Gson gson = new Gson();
+        try {
+            List<ReportResWithSpeed> reportResWithSpeeds = reportResService.showStationReport(resourceId);
+
+            String json = gson.toJson(new Respsonse("200", "OK", reportResWithSpeeds));
+            return json;
+
+        } catch (Exception e) {
+            String json = gson.toJson(new Respsonse("404", "error"));
+            return json;
+        }
+    }
 
 }
 

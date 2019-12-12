@@ -20,6 +20,7 @@ public class DateUtils {
     public static final String DateFormatString_17 = "yyyyMMddHHmmssSSS";
     public static final String DateFormatString_18 = "dd/MM/yyyy";
     public static final String DateFormatString_19 = "HH:MM:SS DD/MM/YYYY";
+    public static final String DateFormatString_20 = "yyyyMMdd";
 
 
     private static Map<String, SimpleDateFormat> simpleDateFormatMap = Maps.newHashMap();

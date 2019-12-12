@@ -1,20 +1,23 @@
 <template>
   <div>
     <template>
-      <div>
+      <div v-if="userInfo.Operator">
         <el-table
           :data="tableData"
           style="width: 100%"
           empty-text="Temporarily no data"
+          max-height="400px"
         >
           <el-table-column
             type="index"
             label="ID"
+            align="center"
             :index="indexMethod">
           </el-table-column>
           <el-table-column
             prop="resourceName"
             label="Resource Applied"
+            align="center"
             width="150">
             <template slot-scope="scope">
               <el-button @click="TodoDeal(scope.row)" type="text" size="small">{{scope.row.resourceName}}</el-button>
@@ -22,31 +25,38 @@
           </el-table-column>
           <el-table-column
             prop="resourceId"
+            align="center"
             label="Resource ID"
             width="120">
           </el-table-column>
           <el-table-column
             prop="taskId"
+            align="center"
             label="Task ID">
           </el-table-column>
           <el-table-column
-            prop="areaCode"
-            label="Area Code">
+            prop="resourceType"
+            align="center"
+            label="Resource Type">
           </el-table-column>
           <el-table-column
             prop="lessee"
+            align="center"
             label="Applicant">
           </el-table-column>
           <el-table-column
             prop="applicationTime"
+            align="center"
             label="Application Time">
           </el-table-column>
           <el-table-column
             prop="applicationType"
+            align="center"
             label="Application Type">
           </el-table-column>
           <el-table-column
             prop="progress"
+            align="center"
             label="Status">
           </el-table-column>
           <!--          <el-table-column-->
@@ -56,6 +66,57 @@
           <!--              <el-button @click="TodoDeal(scope.row)" type="text" size="small">审批</el-button>-->
           <!--            </template>-->
           <!--          </el-table-column>-->
+        </el-table>
+      </div>
+
+      <div v-if="!this.userInfo.Operator">
+        <el-table
+          :data="tableData"
+          style="width: 100%"
+          empty-text="Temporarily no data"
+          max-height="400px"
+        >
+          <el-table-column
+            type="index"
+            label="ID"
+            align="center"
+            :index="indexMethod">
+          </el-table-column>
+          <el-table-column
+            prop="resourceName"
+            label="Planning base station"
+            align="center"
+            width="150">
+            <template slot-scope="scope">
+              <el-button @click="TodoDeal(scope.row)" type="text" size="small">{{scope.row.resourceName}}</el-button>
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="resourceId"
+            label="Resource ID"
+            align="center"
+            width="120">
+          </el-table-column>
+          <el-table-column
+            prop="resourceType"
+            align="center"
+            label="Resource Type">
+          </el-table-column>
+          <el-table-column
+            prop="startAmount"
+            align="center"
+            label="Starting amount">
+          </el-table-column>
+          <el-table-column
+            prop="quotationAmount"
+            align="center"
+            label="Quatation amount(¥)">
+          </el-table-column>
+          <el-table-column
+            prop="isBid"
+            align="center"
+            label="Final result">
+          </el-table-column>
         </el-table>
       </div>
     </template>
@@ -79,7 +140,7 @@
 </template>
 
 <script>
-  import {mapMutations} from 'vuex';
+  import {mapMutations, mapState} from 'vuex';
   import TodoDeal from "./TodoDeal";
   import TodoApi from "./api/TodoApi";
   import { getCurrentDateStr } from '@/utils/dateUtil';
@@ -105,6 +166,10 @@
         applicationType: {
           '2': 'Resource termination',
           '1': 'Resource application',
+        },
+        IsBid: {
+          '0': 'Lose',
+          '1': 'Win'
         }
       }
     },
@@ -131,6 +196,10 @@
           pageSize: this.pageConfig.pageSize,
           ...this.$store.state.searchCriteria,
         }
+        // 第三方登录查看详情
+        if (!this.userInfo.Operator) {
+          params.offeror = this.userInfo.userName;
+        }
         TodoApi.getUnicomApply(params).then(result => {
           const {list = [], total = 0, pages = 0} = result;
           this.pageConfig = {
@@ -149,6 +218,15 @@
             if (item.applicationType) {
               item.applicationType = this.applicationType[item.applicationType];
             }
+
+            Object.keys(item).forEach(keyItem => {
+              if (item[keyItem] != 0 && !item[keyItem]) {
+                item[keyItem] = '-';
+              }
+              if (keyItem == 'isBid') {
+                item.isBid = this.IsBid[item.isBid];
+              }
+            });
           })
           this.tableData = list;
         }).catch(error => {
@@ -159,7 +237,7 @@
         const { resourceId = '', taskId = '' } = item;
         TodoApi.getAllInfo({ resourceId, taskId }).then(result => {
           this.dialogVisible = true;
-          result.dialogTitile = '申请详情';
+          result.dialogTitile = 'Detailed information';
           this.TODO_ITEM(result);
         }).catch(error => {
           console.log(error);
@@ -173,6 +251,7 @@
       TodoDeal,
     },
     computed: {
+      ...mapState(['userInfo']),
       search() {
         return this.$store.state.searchCriteria;
       }

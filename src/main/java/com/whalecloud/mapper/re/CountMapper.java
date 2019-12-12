@@ -1,8 +1,12 @@
 package com.whalecloud.mapper.re;
 
 import com.github.pagehelper.Page;
+import com.whalecloud.domain.MyQuotation;
 import com.whalecloud.domain.Progress;
 import org.apache.ibatis.annotations.Param;
+
+import java.math.BigDecimal;
+import java.util.List;
 
 public interface CountMapper {
 
@@ -158,4 +162,10 @@ public interface CountMapper {
     int getFTPlan(@Param("resourceType") String resourceType);
     int getFTMaintain(@Param("resourceType") String resourceType);
 
+    int getInvestorPlaning(@Param("resourceType") String resourceType);
+    int getTotalUser();
+    int getBid(@Param("resourceType") String resourceType);
+    BigDecimal getTotalBidCost(@Param("resourceType") String resourceType);
+
+    List<MyQuotation> getInvestorCost(@Param("resourceType") String resourceType);
 }

@@ -2,6 +2,7 @@ package com.whalecloud.serviceimpl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.whalecloud.domain.MyQuotation;
 import com.whalecloud.domain.Progress;
 import com.whalecloud.domain.QueryResult;
 import com.whalecloud.mapper.re.CountMapper;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,7 +32,10 @@ public class CountServiceImpl implements CountService {
      */
     @Override
     public int getTotalCount(String resourceType) {
-        return countMapper.getTotalCount(resourceType);
+        int unicomCount = countMapper.getUnicomCount(resourceType);
+        int telecomCount = countMapper.getTelecomCount(resourceType);
+        int totalCount=unicomCount+telecomCount;
+        return totalCount;
     }
 
     /**
@@ -222,6 +227,15 @@ public class CountServiceImpl implements CountService {
     @Override
     public QueryResult<Progress> getUnicomRentDetailByCondition(String resourceName, String leaseStatus, String status,String resourceType,Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum,pageSize);
+        if (resourceName==null || resourceName.length()==0){
+            resourceName=null;
+        }
+        if (leaseStatus==null || leaseStatus.length()==0){
+            leaseStatus=null;
+        }
+        if (status==null || status.length()==0){
+            status=null;
+        }
         Page<Progress> unicomRentDetailByCondition = countMapper.getUnicomRentDetailByCondition(resourceName, leaseStatus, status,resourceType);
         List<Progress> result = unicomRentDetailByCondition.getResult();
         long total = unicomRentDetailByCondition.getTotal();
@@ -243,6 +257,15 @@ public class CountServiceImpl implements CountService {
     @Override
     public QueryResult<Progress> getTelecomRentDetailByCondition(String resourceName, String leaseStatus, String status,String resourceType, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum,pageSize);
+        if (resourceName==null || resourceName.length()==0){
+            resourceName=null;
+        }
+        if (leaseStatus==null || leaseStatus.length()==0){
+            leaseStatus=null;
+        }
+        if (status==null || status.length()==0){
+            status=null;
+        }
         Page<Progress> telecomRentDetailByCondition = countMapper.getTelecomRentDetailByCondition(resourceName, leaseStatus, status,resourceType);
         List<Progress> result = telecomRentDetailByCondition.getResult();
         long total = telecomRentDetailByCondition.getTotal();
@@ -555,7 +578,7 @@ public class CountServiceImpl implements CountService {
     }
 
     @Override
-    public List<Map<String, Integer>> getCountByResourceType(String resourceType) {
+    public Map<String, Integer> getCountByResourceType(String resourceType) {
         List<Map<String, Integer>> list=new ArrayList<>();
         Map<String, Integer> countMap=new HashMap<>();
         int totalCount = countMapper.getTotalCount(resourceType);
@@ -567,7 +590,60 @@ public class CountServiceImpl implements CountService {
         countMap.put("telecomCount",telecomCount);
 
         list.add(countMap);
+        return countMap;
+    }
+
+    //第三方统计
+    @Override
+    public List<Object> getInvestorCount(String resourceType) {
+        int unicomPlaning = countMapper.getUnicomPlaning(resourceType);
+        int telecomPlaning = countMapper.getTelecomPlaning(resourceType);
+        int investorPlaning = countMapper.getInvestorPlaning(resourceType);
+        int totalPlanning =unicomPlaning+telecomPlaning+investorPlaning;
+
+        int bid = countMapper.getBid(resourceType);
+        BigDecimal totalBidCost = countMapper.getTotalBidCost(resourceType);
+        int totalUser = countMapper.getTotalUser();
+        int investor=totalUser-2;
+        List<Object> list=new ArrayList<>();
+        list.add(totalPlanning);
+        list.add(bid);
+        list.add(totalBidCost);
+        list.add(investor);
+
         return list;
     }
+
+    //规划中基站分布
+    @Override
+    public List<Map<String, Object>> getPlanStation(String resourceType) {
+        int unicomPlaning = countMapper.getUnicomPlaning(resourceType);
+        int telecomPlaning = countMapper.getTelecomPlaning(resourceType);
+        int investorPlaning = countMapper.getInvestorPlaning(resourceType);
+        Map<String,Object> uMap=new HashMap<>();
+        uMap.put("name","ChinaUnicom");
+        uMap.put("value",unicomPlaning);
+        Map<String,Object> tMap=new HashMap<>();
+        tMap.put("name","ChinaTelecom");
+        tMap.put("value",telecomPlaning);
+        Map<String,Object> iMap=new HashMap<>();
+        iMap.put("name","Investment");
+        iMap.put("value",investorPlaning);
+
+        List<Map<String, Object>> list=new ArrayList<>();
+        list.add(uMap);
+        list.add(tMap);
+        list.add(iMap);
+        return list;
+    }
+
+    //第三方中标金额总和
+    @Override
+    public List<MyQuotation> getInvestorCost(String resourceType) {
+        List<MyQuotation> investorCost = countMapper.getInvestorCost(resourceType);
+
+        return investorCost;
+    }
+
 
 }

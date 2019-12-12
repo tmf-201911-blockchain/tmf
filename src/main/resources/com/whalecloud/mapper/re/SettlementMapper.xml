@@ -4,6 +4,7 @@
 
 
     <resultMap type="com.whalecloud.domain.RentSettlement" id="rentInSettlement">
+        <result property="resourceId" column="resource_id"/>
         <result property="resourceName" column="resource_name"/>
         <result property="resourceType" column="resource_type"/>
         <result property="owner" column="owner"/>
@@ -13,9 +14,9 @@
         <result property="rate" column="rate"/>
     </resultMap>
     <select id="findRentInSettlement" parameterType="java.lang.String" resultMap="rentInSettlement">
-        SELECT resource_name,resource_type,owner,status,area_code,effective_time,rate
+        SELECT resource_id,resource_name,resource_type,owner,status,area_code,effective_time,rate
         FROM res_detail
-        WHERE lessee=#{lessee} AND lease_status=0
+        WHERE lessee=#{lessee} AND lease_status=2
         <if test="status !=null">
             AND status = #{status}
         </if>
@@ -59,6 +60,77 @@
     <select id="getStar" resultType="java.lang.Integer" parameterType="java.lang.String">
         SELECT COUNT(star) FROM report_res
         WHERE resource_id = #{resourceId}
+    </select>
+
+
+    <resultMap type="com.whalecloud.domain.MyQuotation" id="investorApply">
+        <result property="resourceName" column="resource_name"/>
+        <result property="resourceId" column="resource_id"/>
+        <result property="resourceType" column="resource_type"/>
+
+        <result property="startAmount" column="investment_cost"/>
+        <result property="quotationAmount" column="quotation_amount"/>
+        <result property="isBid" column="is_bid"/>
+    </resultMap>
+    <select id="getInvestorApply" parameterType="java.lang.String" resultMap="investorApply">
+        SELECT d.resource_name,d.resource_id,d.resource_type,d.investment_cost,MAX(q.quotation_amount) quotation_amount,q.is_bid
+        FROM res_detail d,quotation q
+        WHERE d.resource_id = q.resource_id AND q.offeror=#{offeror}
+        <if test="resourceType !=null">
+            AND d.resource_type = #{resourceType}
+        </if>
+        <if test="resourceName != null">
+            AND d.resource_name LIKE concat('%',concat(#{resourceName}),'%')
+        </if>
+        GROUP BY q.resource_id ORDER BY q.quotation_time DESC
+    </select>
+
+    <resultMap type="com.whalecloud.domain.MyQuotation" id="ISPSharing">
+        <result property="resourceId" column="resource_id"/>
+        <result property="resourceName" column="resource_name"/>
+        <result property="resourceType" column="resource_type"/>
+        <result property="owner" column="owner"/>
+        <result property="lessee" column="lessee"/>
+        <result property="settlementDate" column="settlementDate"/>
+        <result property="ISPRevenue" column="ISPRevenue"/>
+        <result property="investorRevenue" column="investorRevenue"/>
+    </resultMap>
+    <select id="getISPSharing" parameterType="java.lang.String" resultMap="ISPSharing">
+        SELECT d.resource_id,d.`resource_name`,d.`resource_type`,d.`owner`,d.`lessee`,d.`create_time` settlementDate,
+        d.`investment_cost` ISPRevenue,q.`quotation_amount` investorRevenue
+        FROM res_detail d,quotation q
+        WHERE d.resource_id=q.resource_id AND d.ISP=#{offeror}
+        <if test="resourceType !=null">
+            AND d.resource_type = #{resourceType}
+        </if>
+        <if test="resourceName != null">
+            AND d.resource_name LIKE concat('%',concat(#{resourceName}),'%')
+        </if>
+        ORDER BY q.quotation_time DESC
+    </select>
+
+
+    <resultMap type="com.whalecloud.domain.MyQuotation" id="investmentSharing">
+        <result property="resourceId" column="resource_id"/>
+        <result property="resourceName" column="resource_name"/>
+        <result property="resourceType" column="resource_type"/>
+        <result property="ISP" column="ISP"/>
+        <result property="settlementDate" column="settlementDate"/>
+        <result property="ISPRevenue" column="ISPRevenue"/>
+        <result property="investorRevenue" column="investorRevenue"/>
+    </resultMap>
+    <select id="getInvestmentSharing" parameterType="java.lang.String" resultMap="investmentSharing">
+        SELECT d.resource_id,d.`resource_name`,d.`resource_type`,d.ISP,d.`create_time` settlementDate,
+        d.`investment_cost` ISPRevenue,q.`quotation_amount` investorRevenue
+        FROM res_detail d,quotation q
+        WHERE d.resource_id=q.resource_id AND owner=#{offeror} AND q.`is_bid`=1
+        <if test="resourceType !=null">
+            AND d.resource_type = #{resourceType}
+        </if>
+        <if test="resourceName != null">
+            AND d.resource_name LIKE concat('%',concat(#{resourceName}),'%')
+        </if>
+        ORDER BY q.quotation_time DESC
     </select>
 
 </mapper>

@@ -426,63 +426,63 @@ public class QuotationExample {
             return (Criteria) this;
         }
 
-        public Criteria andIdBidIsNull() {
-            addCriterion("id_bid is null");
+        public Criteria andIsBidIsNull() {
+            addCriterion("is_bid is null");
             return (Criteria) this;
         }
 
-        public Criteria andIdBidIsNotNull() {
-            addCriterion("id_bid is not null");
+        public Criteria andIsBidIsNotNull() {
+            addCriterion("is_bid is not null");
             return (Criteria) this;
         }
 
-        public Criteria andIdBidEqualTo(Integer value) {
-            addCriterion("id_bid =", value, "idBid");
+        public Criteria andIsBidEqualTo(Integer value) {
+            addCriterion("is_bid =", value, "isBid");
             return (Criteria) this;
         }
 
-        public Criteria andIdBidNotEqualTo(Integer value) {
-            addCriterion("id_bid <>", value, "idBid");
+        public Criteria andIsBidNotEqualTo(Integer value) {
+            addCriterion("is_bid <>", value, "isBid");
             return (Criteria) this;
         }
 
-        public Criteria andIdBidGreaterThan(Integer value) {
-            addCriterion("id_bid >", value, "idBid");
+        public Criteria andIsBidGreaterThan(Integer value) {
+            addCriterion("is_bid >", value, "isBid");
             return (Criteria) this;
         }
 
-        public Criteria andIdBidGreaterThanOrEqualTo(Integer value) {
-            addCriterion("id_bid >=", value, "idBid");
+        public Criteria andIsBidGreaterThanOrEqualTo(Integer value) {
+            addCriterion("is_bid >=", value, "isBid");
             return (Criteria) this;
         }
 
-        public Criteria andIdBidLessThan(Integer value) {
-            addCriterion("id_bid <", value, "idBid");
+        public Criteria andIsBidLessThan(Integer value) {
+            addCriterion("is_bid <", value, "isBid");
             return (Criteria) this;
         }
 
-        public Criteria andIdBidLessThanOrEqualTo(Integer value) {
-            addCriterion("id_bid <=", value, "idBid");
+        public Criteria andIsBidLessThanOrEqualTo(Integer value) {
+            addCriterion("is_bid <=", value, "isBid");
             return (Criteria) this;
         }
 
-        public Criteria andIdBidIn(List<Integer> values) {
-            addCriterion("id_bid in", values, "idBid");
+        public Criteria andIsBidIn(List<Integer> values) {
+            addCriterion("is_bid in", values, "isBid");
             return (Criteria) this;
         }
 
-        public Criteria andIdBidNotIn(List<Integer> values) {
-            addCriterion("id_bid not in", values, "idBid");
+        public Criteria andIsBidNotIn(List<Integer> values) {
+            addCriterion("is_bid not in", values, "isBid");
             return (Criteria) this;
         }
 
-        public Criteria andIdBidBetween(Integer value1, Integer value2) {
-            addCriterion("id_bid between", value1, value2, "idBid");
+        public Criteria andIsBidBetween(Integer value1, Integer value2) {
+            addCriterion("is_bid between", value1, value2, "isBid");
             return (Criteria) this;
         }
 
-        public Criteria andIdBidNotBetween(Integer value1, Integer value2) {
-            addCriterion("id_bid not between", value1, value2, "idBid");
+        public Criteria andIsBidNotBetween(Integer value1, Integer value2) {
+            addCriterion("is_bid not between", value1, value2, "isBid");
             return (Criteria) this;
         }
 

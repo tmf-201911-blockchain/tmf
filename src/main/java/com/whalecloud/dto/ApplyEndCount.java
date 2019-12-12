@@ -13,6 +13,25 @@ public class ApplyEndCount {
 
     private String owner;
 
+    private String isp;
+
+    private Integer state;
+
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
+    }
+
+    public String getIsp() {
+        return isp;
+    }
+
+    public void setIsp(String isp) {
+        this.isp = isp;
+    }
 
     public int getApplyCount() {
         return applyCount;

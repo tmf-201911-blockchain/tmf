@@ -2,10 +2,9 @@ package com.whalecloud.service;
 
 
 
-import com.github.pagehelper.Page;
+import com.whalecloud.domain.MyQuotation;
 import com.whalecloud.domain.Progress;
 import com.whalecloud.domain.QueryResult;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -94,6 +93,14 @@ public interface CountService {
 
     List<Map<String,Object>> getMapCount(String resourceType);
 
-    List<Map<String, Integer>> getCountByResourceType(String resourceType);
+    Map<String, Integer> getCountByResourceType(String resourceType);
+
+    //第三方统计
+    List<Object> getInvestorCount(String resourceType);
+
+    //规划中基站分布
+    List<Map<String,Object>> getPlanStation(String resourceType);
+
+    List<MyQuotation> getInvestorCost(String resourceType);
 
 }

@@ -6,7 +6,7 @@
           <span style="font-size: 18px; font-weight: bold; color: black">{{ details.resourceName }}</span>
           <span style="font-size: 13px; color: #999999; margin-left: 10px">(Task ID：{{ details.taskId }})</span>
         </div>
-        <div style="margin: 10px 0 20px 0;">
+        <div style="margin: 10px 0 20px 0;" v-if="!details.hideSome">
           <span style="font-size: 13px; color: #999999;">Applicant：{{ details.lessee }} </span>
           <span style="font-size: 13px; color: #999999; margin-left: 20px">Application Time：{{ details.applicationTime }} </span>
         </div>
@@ -17,7 +17,7 @@
           <div class="pending" v-if="details.progress == '0'">Pending</div>
           <div class="approval" v-if="details.progress == '2'">Approved</div>
           <div class="refuse" v-if="details.progress == '1'">Refuse</div>
-          <div>
+          <div v-if="!details.hideSome">
             <p>Application type：<span>{{ this.applicationType[details.applicationType] }}</span></p>
           </div>
         </div>
@@ -26,7 +26,9 @@
 
     <div class="base-station-info">
       <div class="base-station-info-left">
-        <div class="base-img"></div>
+        <div class="base-img">
+          <img src="../../assets/photo@2x.png" alt="" style="width: 100%; height: 100%">
+        </div>
         <div class="base-state">{{ this.status[details.status] }}</div>
       </div>
 
@@ -76,15 +78,15 @@
       return {
         details: null,
         status: {
-          0: 'In Use',
+          0: 'Running',
           1: 'Constructing',
           2: 'Planning',
           3: 'Maintaining',
         },
         importance: {
-          0: 'high',
-          1: 'middle',
-          2: 'low',
+          0: 'High',
+          1: 'Middle',
+          2: 'Low',
         },
         applicationType: {
           1: 'Resource application',
@@ -98,6 +100,11 @@
     computed: {
       ...mapState(['todoItem']),
     },
+    watch: {
+      'todoItem': function (newDate) {
+        this.details = newDate;
+      }
+    }
   }
 </script>
 

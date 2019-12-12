@@ -44,4 +44,6 @@ public interface ProgressMapper {
 
     //第三方申请建站审批
     int updatePlaning(@Param("investmentCost")String investmentCost,@Param("progress")String progress,@Param("opinion") String opinion,@Param("taskId")String taskId);
+
+
 }

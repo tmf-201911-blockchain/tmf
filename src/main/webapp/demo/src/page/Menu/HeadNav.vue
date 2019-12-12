@@ -23,7 +23,7 @@
 <!--        </div>-->
         <!-- 用户头像 -->
         <div class="user-avator">
-          <img src="../../assets/img.jpg" />
+          <img :src="imgSrc" />
         </div>
         <!-- 用户名下拉菜单 -->
         <el-dropdown class="user-name" trigger="click" @command="handleCommand">
@@ -37,12 +37,32 @@
         </el-dropdown>
       </div>
     </div>
+    <el-dialog
+      title="Exit confirm"
+      :visible.sync="centerDialogVisible"
+      width="30%"
+      center>
+      <span>Are you sure you want to log out?</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="LogOut">Confirm</el-button>
+        <el-button @click="centerDialogVisible = false">Cancel</el-button>
+      </span>
+    </el-dialog>
   </div>
 
 </template>
 
 <script>
   import { mapState } from 'vuex';
+  import imgSrc1 from "../../assets/img.jpg";
+  import ZTE from '../../assets/ZTE.png';
+  import liantong from '../../assets/liantong.png';
+  import moren from '../../assets/moren.png';
+  import IBM from '../../assets/IBM.png';
+  import dianxin from '../../assets/dianxin.png'
+  import alibaba from '../../assets/alibaba.png';
+
+
     export default {
       name: "headNav",
       computed: {
@@ -50,23 +70,52 @@
       },
       data() {
         return {
-          isCollapse: false
+          isCollapse: false,
+          centerDialogVisible: false,
+          imgSrc: moren,
         };
       },
       methods: {
         LogOut() {
+          this.centerDialogVisible = false;
           this.$store.commit('DELETE_USER_INFO');
           this.$router.push('/');
         },
         // 用户名下拉菜单选择事件
         handleCommand(command) {
           if (command == 'loginout') {
-            this.LogOut();
+            // this.LogOut();
+            this.centerDialogVisible = true;
           }
         },
         isShow() {
           this.$store.dispatch('toggleSideBar')
-        }
+        },
+        LoadHead() {
+          const { userName, role } = this.userInfo;
+          switch (role) {
+            case 'Unicom':
+              this.imgSrc = liantong;
+              break;
+            case 'Telecom':
+              this.imgSrc = dianxin;
+              break;
+            case 'Investor':
+              if (userName == 'IBM') {
+                this.imgSrc = IBM;
+              } else if (userName == 'ZTE') {
+                this.imgSrc = ZTE;
+              } else if (userName == 'Alibaba') {
+                this.imgSrc = alibaba;
+              }
+              break;
+            default:
+              break;
+          }
+        },
+      },
+      mounted() {
+        this.LoadHead();
       }
     }
 </script>
@@ -151,5 +200,11 @@
   }
   .el-dropdown-menu__item {
     text-align: center;
+  }
+</style>
+
+<style>
+  .header .el-dialog__header {
+    text-align: left;
   }
 </style>

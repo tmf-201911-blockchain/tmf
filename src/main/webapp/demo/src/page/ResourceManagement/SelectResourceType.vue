@@ -7,11 +7,17 @@
   >
     <div class="container">
       <div class="icon-wrap" @click="selectTypeBaseStation">
-        <i class="iconfont size" style="color: #56bb3e">&#xe651;</i>
+        <!--<i class="iconfont size" style="color: #56bb3e">&#xe651;</i>-->
+        <div class="imgStyle">
+          <img src="../../assets/5G_build.png" style="width: 72px;height: 72px"/>
+        </div>
         <div class="text">BaseStation</div>
       </div>
       <div class="icon-wrap" @click="selectTypeTower">
-        <i class="iconfont size" style="color: #3e93f6">&#xe66d;</i>
+        <!--<i class="iconfont size" style="color: #3e93f6">&#xe66d;</i>-->
+        <div class="imgStyle">
+          <img src="../../assets/tower_plan.png" style="width: 72px;height: 72px"/>
+        </div>
         <div class="text">Tower</div>
       </div>
     </div>
@@ -78,5 +84,11 @@
     display: inline-table;
     margin: 0 36px;
     cursor: pointer;
+  }
+  .imgStyle{
+    padding: 21px 29px;
+    border: solid 1px #ddd;
+    border-radius: 4px;
+    line-height: normal;
   }
 </style>

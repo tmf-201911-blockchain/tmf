@@ -1,6 +1,6 @@
 <template>
   <div class='footer'>
-    <p class="beian">京ICP备05002570号       中国联合网络通信集团有限公司版权所有       建议使用火狐、Chrome或IE9以上浏览器浏览</p>
+    <p class="beian">It is recommended to use Firefox, Chrome or IE9 or above browser to browse</p>
   </div>
 </template>
 
@@ -14,10 +14,10 @@
 <style lang="less">
   .footer{
     width: 100%;
-    padding: 10px 0;
+    padding: 0 0 10px 0;
     font-size:12px;
     text-align: center;
-    background: #fff;
+    background: rgb(243, 246, 254);
     p{
       line-height: 30px;
     }

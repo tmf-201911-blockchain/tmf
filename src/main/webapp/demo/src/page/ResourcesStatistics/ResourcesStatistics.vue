@@ -1,12 +1,15 @@
 <template>
-  <div style="background: rgba(243,246,254,1);">
+  <div style="background: rgba(243,246,254,1);overflow: hidden;overflow-y: scroll;height: 100%; width: 100%">
     <!--height: 100%-->
-    <div style="display: flex;justify-content: space-between;margin-right: 25px;">
+    <div>
       <span style="display: inline-block;padding: 10px;overflow-y: scroll;max-height: 622px">
         <span style="margin-right: 4px;font-size:14px;color:rgba(0,0,0,0.45);margin-left: 25px">current position:</span>
         <span style="font-size:14px;color:rgba(0,0,0,0.65);">Resource Statistics</span>
       </span>
-      <div>
+    </div>
+    <div style="display: flex;justify-content: space-between;margin-bottom: 24px;background: white;margin-left: 24px;height: 60px;line-height: 44px;">
+      <span style="font-size: 16px;color: rgba(0, 0, 0, 0.85);padding: 8px 20px;box-sizing: border-box">Resource Statistics</span>
+      <div class="headStyle">
         <span>Resource Type：</span>
         <el-select v-model="resourceTypevalue" placeholder="请选择" @change="resourceTypechange($event)">
           <el-option
@@ -24,8 +27,8 @@
         style="height: 80px;line-height: 80px;background: rgb(255, 255, 255);padding-left: 24px;box-sizing: border-box">
         <img src="../../assets/pieChart.png" class="pieChart"/>
         <span style="font-size:16px;color:rgba(0,0,0,0.85);margin-right: 19px">Overall Statistics</span>
-        <span class="resourceType">Resource Type:</span>
-        <span style="color:rgba(0,0,0,0.65);">gNB</span>
+        <!--<span class="resourceType">Resource Type:</span>-->
+        <!--<span style="color:rgba(0,0,0,0.65);">gNB</span>-->
       </div>
       <div style="background:rgba(255,255,255,1);border-radius:2px;">
         <!--width:1136px;height:1038px;-->
@@ -37,20 +40,23 @@
             <div>
               <div class="basestationNum" style="margin-left: 20px">
                 <div class="basesnum">{{basesnum}}</div>
-                <div class="bases">gNB</div>
+                <div class="bases" v-if="BaseStationNum">gNB</div>
+                <div class="bases" v-if="TowerNum">Tower</div>
               </div>
               <div class="basestationNum">
                 <div class="basesnum">{{ltbasesnum}}</div>
-                <div class="bases">CU gNB</div>
+                <div class="bases" v-if="BaseStationNum">CU gNB</div>
+                <div class="bases" v-if="TowerNum">CU Tower</div>
               </div>
               <div class="basestationNum">
                 <div class="basesnum">{{dxbasesnum}}</div>
-                <div class="bases">CT gNB</div>
+                <div class="bases" v-if="BaseStationNum">CT gNB</div>
+                <div class="bases" v-if="TowerNum">CT Tower</div>
               </div>
             </div>
             <!--第一部分第一个统计图echarts-->
             <div>
-              <div style="width:400px;height:400px" ref="chart"></div>
+              <div style="width:100%;height:400px" ref="chart"></div>
             </div>
           </div>
           <!--第一部分第二个统计图-->
@@ -59,13 +65,13 @@
             <div class="currentCity">Current City：</div>
             <div class="beijing">Beijing</div>
             <!--第一部分第二个统计图echarts-->
-            <div style="width:400px;height:400px" class='mychart' id='mychart' ref="chart1"></div>
+            <div style="width:70%;height:400px" class='mychart' id='mychart' ref="chart1"></div>
           </div>
         </div>
         <!--第二部分-->
         <div class="baseSecond">
           <!--第二部分统计图头部-->
-          <div style="display: flex;margin-top: 24px">
+          <div style="display: flex;margin-top: 24px;justify-content: space-between;margin-right: 24px;">
             <div class="using commom">
               <div>
                 <span class="bases">Running</span>
@@ -101,10 +107,11 @@
           </div>
           <!--第二部分饼图-->
           <div style="display:flex;">
-            <div style="width:420px;height:350px" ref="chart2"></div>
-            <div style="width:700px;height:350px" ref="chart22"></div>
+            <div style="width:45%;height:350px" ref="chart2"></div>
+            <div style="width:55%;height:350px" ref="chart22"></div>
           </div>
         </div>
+        <div style="background: white;height: 24px;"></div>
 
       </div>
       <div style="background:rgba(255,255,255,1);border-radius:2px;margin-top: 24px">
@@ -118,8 +125,8 @@
           <!--第三部分统计图头部-->
           <div>
             <div style="margin-top: 20px;margin-left: 24px;color:rgba(0,0,0,0.85);font-size: 14px">By CSP</div>
-            <el-button type="text" @click="CU()" style="margin-left: 24px">CUDetails</el-button>
-            <el-button type="text" @click="CT()">CTDetails</el-button>
+            <!--<el-button type="text" @click="CU()" style="margin-left: 24px">CUDetails</el-button>-->
+            <!--<el-button type="text" @click="CT()">CTDetails</el-button>-->
           </div>
           <!--第三部分饼图-->
           <div style="margin-left: 20px;">
@@ -321,23 +328,57 @@
 
           </div>
           <div style="display:flex;">
-            <div style="width:400px;height:350px" ref="chart3"></div>
-            <div style="width:700px;height:350px" ref="chart32"></div>
+            <div style="width:45%;height:350px" ref="chart3"></div>
+            <div style="width:55%;height:350px" ref="chart32"></div>
           </div>
         </div>
         <!--第四部分-->
         <div class="baseFour">
           <!--第四部分统计图头部-->
           <div style="display: flex;margin-left: 24px;margin-top: 24px">
-            <span style="font-size:14px;color:rgba(0,0,0,0.85);">Monthly Trend: Sharing gNB Numbers</span>
+            <span style="font-size:14px;color:rgba(0,0,0,0.85);" v-if="BaseStationNum">Monthly Trend: Sharing gNB Numbers</span>
+            <span style="font-size:14px;color:rgba(0,0,0,0.85);" v-if="TowerNum">Monthly Trend: Sharing Tower Numbers</span>
             <span style="font-size:14px;color:rgba(0,0,0,0.45);margin-left: 24px">Year:2019</span>
           </div>
           <!--第四部分饼图-->
           <div>
-            <div style="width:1088px;height:350px" ref="chart4"></div>
+            <div style="width:100%;height:350px" ref="chart4"></div>
           </div>
         </div>
+        <div style="background: white;height: 24px;"></div>
       </div>
+
+      <div style="background:rgba(255,255,255,1);border-radius:2px;margin-top: 24px">
+        <div style="margin-left: 24px;height: 50px;line-height: 50px;font-size:16px;color:rgba(0,0,0,0.85);">
+          <img src="../../assets/pieChart.png" class="pieChart"/>
+          Capital source statistics
+        </div>
+        <div style="display: flex;justify-content: space-between;margin-left: 22px;margin-right: 22px;">
+          <div class="CapitalStyle">
+            <div>{{externalFunds[0]}}</div>
+            <div class="CapitalTitle" v-if="BaseStationNum">BaseStation planned</div>
+            <div class="CapitalTitle" v-if="TowerNum">Tower planned</div>
+          </div>
+          <div class="CapitalStyle">
+            <div>{{externalFunds[1]}}</div>
+            <div class="CapitalTitle">Completion of bidding</div>
+          </div>
+          <div class="CapitalStyle">
+            <div>¥{{externalFunds[2]}}</div>
+            <div class="CapitalTitle">fund raised</div>
+          </div>
+          <div class="CapitalStyle">
+            <div>{{externalFunds[3]}}</div>
+            <div class="CapitalTitle">investors</div>
+          </div>
+        </div>
+        <div style="display:flex;">
+          <div style="width:45%;height:350px" ref="chart5"></div>
+          <div style="width:55%;height:350px" ref="chart55"></div>
+        </div>
+      </div>
+
+
     </div>
   </div>
 </template>
@@ -356,6 +397,11 @@
         myChart3: null,
         myChart32: null,
         myChart4: null,
+        myChart5: null,
+        myChart55: null,
+        echarDataArr: [],
+        echarDataArrNum: [],
+        echarDataArrName: [],
         basesnum: '',
         ltbasesnum: '',
         dxbasesnum: '',
@@ -366,6 +412,7 @@
         getTotalMaintenance: '',
         dialogVisible: false,
         dialogVisiblee: false,
+        externalFunds: "",
         input: '',
         options: [{
           value: '',
@@ -466,7 +513,10 @@
           value: 'Tower',
           label: 'Tower'
         }],
-        resourceTypevalue: 'BaseStation'
+        resourceTypevalue: 'BaseStation',
+        BaseStationNum:true,
+        TowerNum:false,
+        MarTop:false,
       };
     },
     created() {
@@ -798,7 +848,7 @@
           legend: {
             type: 'scroll',
             bottom: 40,
-            right: 100,
+            right: 70,
             data: ['China Telecom', 'China Unicom'],
             // data:['中国电信','中国联通'],
           },
@@ -933,7 +983,7 @@
             }
           },
           dataRange: {
-            x: 'right',
+            x: '400',
             y: 'bottom',
             splitList: [
               // {start:100,color:"green"},
@@ -958,6 +1008,7 @@
               roam: false,
               // 定位 值: 'top', 'middle', 'bottom' 也可以是具体的值或者百分比
               top: 70,
+              left: 0,
               // 图形上的文本标签
               label: {
                 show: false // 是否显示对应地名
@@ -985,7 +1036,7 @@
                 // 图形样式
                 itemStyle: {
                   // 地图区域的颜色
-                  areaColor: '#FF6347'
+                  areaColor: '#7056E6'
                 }
               },
               // 地图系列中的数据内容数组，数组项可以为单个数值
@@ -1021,7 +1072,7 @@
             right: 0,
             // data:['使用中','在建中','规划中','维护中'],
             data: ['Running', 'Constructing', 'Planning', 'Maintaining'],
-            padding: [100, 0, 0, 0]
+            padding: [120, 20, 0, 0]
           },
           color: ['#F26E15', '#07BE1B', '#0093FE', '#AEAEAE'],
           series: [
@@ -1029,6 +1080,7 @@
               // name:'联通',
               type: 'pie',
               radius: ['40%', '60%'],
+              center: ['50%','50%'],
               avoidLabelOverlap: false,
               label: {
                 normal: {
@@ -1074,7 +1126,7 @@
             right: 0,
             // data:['使用中','在建中','规划中','维护中'],
             data: ['Running', 'Constructing', 'Planning', 'Maintaining'],
-            padding: [100, 140, 0, 0]
+            padding: [100, 70, 0, 0]
           },
           color: ['#F26E15', '#07BE1B', '#0093FE', '#AEAEAE'],
           series: [
@@ -1113,7 +1165,7 @@
             right: 5,
             // data:['租入','租出'],
             data: ['RentIn', 'RentOut'],
-            padding: [100, 0, 0, 0]
+            padding: [120, 40, 0, 0]
           },
           graphic: [{ //环形图中间添加文字
             type: 'text', //通过不同top值可以设置上下显示
@@ -1166,7 +1218,7 @@
             right: 5,
             // data:['租入','租出'],
             data: ['RentIn', 'RentOut'],
-            padding: [100, 140, 0, 0]
+            padding: [100, 90, 0, 0]
           },
           graphic: [{ //环形图中间添加文字
             type: 'text', //通过不同top值可以设置上下显示
@@ -1222,19 +1274,49 @@
             data: ['ChinaUnicom', 'ChinaTelecom'],
           },
           xAxis: {
-            data: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"]
+            data: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+            axisLine:{
+              lineStyle:{
+                color:'#D9D9D9',
+              }
+            },
+            axisLabel: {
+              show: true,
+              textStyle: {
+                color: '#000000'
+              }
+            }
           },
-          yAxis: {},
+          yAxis: {
+            axisLine:{
+              lineStyle:{
+                color:'#ffffff',
+              }
+            },
+            axisLabel: {
+              show: true,
+              textStyle: {
+                color: '#000000'
+              }
+            },
+            splitLine :{    //网格线
+              lineStyle:{
+                type:'dashed'    //设置网格线类型 dotted：虚线   solid:实线
+              },
+              show:true //隐藏或显示
+            }
+
+          },
           color: ['#46D1DE', '#5069E4'],
           series: [
             {
-              name: 'CU',
+              name: 'ChinaUnicom',
               type: 'bar',
               barGap: 0,
               data: telecomRentMonth
             },
             {
-              name: 'CT',
+              name: 'ChinaTelecom',
               type: 'bar',
               data: unicomRentMonth
             },
@@ -1243,8 +1325,120 @@
         };
         this.myChart4.setOption(option, true);
       },
+      initCharts5(result) {
+        this.myChart5 = echarts.init(this.$refs.chart5);
+        // 绘制图表
+        let option = {
+          graphic: [{ //环形图中间添加文字
+            type: 'text', //通过不同top值可以设置上下显示
+            left: 'center',
+            top: '45%',
+            style: {
+              // text: 'BaseStation',//环形中间的文字
+              textAlign: 'center',
+              fill: 'black', //文字的颜色
+              width: 30,
+              height: 30,
+              fontSize: 20,
+              fontFamily: "Microsoft YaHei"
+            }
+          }],
+          tooltip: {
+            trigger: 'item',
+            formatter: "{b}: {c} ({d}%)"
+          },
+          legend: {
+            orient: 'vertical',
+            right: 0,
+            data: ['ChinaUnicom', 'ChinaTelecom', 'Investment'],
+            padding: [100, 20, 0, 0]
+          },
+          color: ["#26A6F1", "#00CECD","#FFC246"],
+          series: [
+            {
+              // name:'联通',
+              type: 'pie',
+              radius: ['40%', '60%'],
+              avoidLabelOverlap: false,
+              label: {
+                normal: {
+                  show: false,
+                  position: 'center'
+                },
+              },
+              labelLine: {
+                normal: {
+                  show: false
+                }
+              },
+              data: result
+            }
+          ]
+        };
+        this.myChart5.setOption(option, true);
+      },
+      initCharts55(result) {
+        this.myChart55 = echarts.init(this.$refs.chart55);
+        // 绘制图表
+        let option = {
+          graphic: [{ //环形图中间添加文字
+            type: 'text', //通过不同top值可以设置上下显示
+            left: 'center',
+            top: '45%',
+            style: {
+              // text: 'BaseStation',//环形中间的文字
+              textAlign: 'center',
+              fill: 'black', //文字的颜色
+              width: 30,
+              height: 30,
+              fontSize: 20,
+              fontFamily: "Microsoft YaHei"
+            }
+          }],
+          tooltip: {
+            trigger: 'item',
+            formatter: "{b}: {c} ({d}%)"
+          },
+          legend: {
+            orient: 'vertical',
+            right: 0,
+            // data: ['ChinaUnicom', 'ChinaTelecom', 'Investment'],
+            padding: [100, 100, 0, 0]
+          },
+          color: ['#F26E15', '#07BE1B', '#0093FE', '#46D1DE','#5069E4', '#98A6ED'],
+          series: [
+            {
+              // name:'联通',
+              type: 'pie',
+              radius: ['40%', '60%'],
+              avoidLabelOverlap: false,
+              label: {
+                normal: {
+                  show: false,
+                  position: 'center'
+                },
+              },
+              labelLine: {
+                normal: {
+                  show: false
+                }
+              },
+              data: result
+            }
+          ]
+        };
+        this.myChart55.setOption(option, true);
+      },
+
       resourceTypechange(data){
         this.resourceTypevalue=data;
+        if(this.resourceTypevalue == "Tower"){
+           this.BaseStationNum = false;
+           this.TowerNum = true;
+        }else{
+          this.BaseStationNum = true;
+          this.TowerNum = false;
+        }
         this.api();
       },
       api() {
@@ -1335,7 +1529,22 @@
 
         api.getMapCount(params).then(result => {
           this.initCharts1(result);
-          // console.log(result);
+        }).catch(error => {
+          console.log(error);
+        })
+        //最后饼图
+        api.getInvestorCount(params).then(result => {
+          this.externalFunds = result;
+        }).catch(error => {
+          console.log(error);
+        })
+        api.getPlanStation(params).then(result => {
+          this.initCharts5(result);
+        }).catch(error => {
+          console.log(error);
+        })
+        api.getInvestorCost(params).then(result => {
+          this.initCharts55(result);
         }).catch(error => {
           console.log(error);
         })
@@ -1350,6 +1559,8 @@
       this.initCharts3();
       this.initCharts32();
       this.initCharts4();
+      this.initCharts5();
+      this.initCharts55();
       this.api();
     },
     computed: {
@@ -1537,5 +1748,25 @@
 
   .baseThree .details2 .el-button--text span {
     position: absolute;
+  }
+  .CapitalStyle{
+    width: 20%;
+    height: 88px;
+    border: 1px solid #e8e8e8;
+    text-align: center;
+  }
+  .CapitalTitle{
+    color: #bebebe;
+  }
+  .CapitalStyle div{
+    margin-top: 16px;
+    margin-left: 24px;
+  }
+  .headStyle{
+    margin-right: 25px;
+    margin-top: 7px;
+  }
+  .headStyle .el-input__inner{
+    width: 130px;
   }
 </style>

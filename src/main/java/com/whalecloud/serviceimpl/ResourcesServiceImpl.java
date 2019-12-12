@@ -16,16 +16,14 @@ import com.whalecloud.mapper.re.ResDetailMapper;
 import com.whalecloud.mapper.re.ResProgressMapper;
 import com.whalecloud.mapper.re.ResourceDetailMapper;
 import com.whalecloud.service.ResourcesService;
-import com.whalecloud.util.AtomException;
-import com.whalecloud.util.CommonUtil;
-import com.whalecloud.util.Exceptions;
-import com.whalecloud.util.SeedUtil;
+import com.whalecloud.util.*;
 import com.whalecloud.util.httptool.HttpParamers;
 import com.whalecloud.util.httptool.HttpService;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -67,7 +65,10 @@ public class ResourcesServiceImpl implements ResourcesService {
         String json = gson.toJson(dto);
         ResDetail resDetail = gson.fromJson(json, ResDetail.class);
 
-
+        //竞价截止时间
+        if (!StringUtils.isEmpty(resDetail.getDeadlineTime())) {
+            resDetail.setDeadline(DateUtils.getDate(resDetail.getDeadlineTime()));
+        }
 
         resDetail.setId(SeedUtil.getId());
 
@@ -85,10 +86,8 @@ public class ResourcesServiceImpl implements ResourcesService {
         resDetail.setLeaseStatus(LeaseStatus.notUse.getCode());
         resDetail.setCreateTime(new Date());
         resDetail.setYn(YNEnum.NO.getCode());
-        resDetail.setLessor(resDetail.getOwner());
         //新增
-
-        int i = resDetailMapper.insert(resDetail);
+        int i = resDetailMapper.insertSelective(resDetail);
 
 
         // 需要往区块链塞值
@@ -132,7 +131,9 @@ public class ResourcesServiceImpl implements ResourcesService {
 
         //修改
         dto.setUpdateTime(new Date());
-
+        if (!StringUtils.isEmpty(dto.getDeadlineTime())) {
+            dto.setDeadline(DateUtils.getDate(dto.getDeadlineTime()));
+        }
 
         int i = resDetailMapper.updateByExampleSelective(dto, example);
 
@@ -166,7 +167,7 @@ public class ResourcesServiceImpl implements ResourcesService {
 
         }
         ResDetailExample example = new ResDetailExample();
-        example.createCriteria().andResourceIdEqualTo(resourcesId);
+        example.createCriteria().andResourceIdEqualTo(resourcesId).andYnEqualTo(YNEnum.NO.getCode());
 
 
         List<ResDetail> resDetails = resDetailMapper.selectByExample(example);
@@ -184,7 +185,7 @@ public class ResourcesServiceImpl implements ResourcesService {
     @Override
     public ResDetail getOne(String resourcesId) throws Exception {
         ResDetailExample example = new ResDetailExample();
-        example.createCriteria().andResourceIdEqualTo(resourcesId);
+        example.createCriteria().andResourceIdEqualTo(resourcesId).andYnEqualTo(YNEnum.NO.getCode());
         List<ResDetail> resDetails = resDetailMapper.selectByExample(example);
         if (resDetails.size() == 0) {
             throw new Exception("找不到该基站");
@@ -206,7 +207,7 @@ public class ResourcesServiceImpl implements ResourcesService {
         //获取审批的信息
         ResProgressExample resProgressExample = new ResProgressExample();
         ResProgressExample.Criteria criteria = resProgressExample.createCriteria();
-        criteria.andResourceIdEqualTo(resourcesId);
+        criteria.andResourceIdEqualTo(resourcesId).andYnEqualTo(YNEnum.NO.getCode());
         List<ResProgress> resProgresses = resProgressMapper.selectByExample(resProgressExample);
         ResProgress resProgress;
 
@@ -242,7 +243,7 @@ public class ResourcesServiceImpl implements ResourcesService {
         //获取审批的信息
         ResProgressExample example = new ResProgressExample();
         ResProgressExample.Criteria criteria = example.createCriteria();
-        criteria.andResourceIdEqualTo(resourceId).andTaskIdEqualTo(taskId);
+        criteria.andResourceIdEqualTo(resourceId).andTaskIdEqualTo(taskId).andYnEqualTo(YNEnum.NO.getCode());
         List<ResProgress> resProgresses = resProgressMapper.selectByExample(example);
         if (resProgresses.size() != 0) {
             resProgress = resProgresses.get(0);
@@ -290,10 +291,21 @@ public class ResourcesServiceImpl implements ResourcesService {
 
         ResDetailExample example = new ResDetailExample();
         ResDetailExample.Criteria criteria = example.createCriteria();
-        criteria.andResourceNameLike("%"+resName+"%").andResourceTypeEqualTo(resourceType);
+        criteria.andResourceNameLike("%"+resName+"%").andResourceTypeEqualTo(resourceType).andYnEqualTo(YNEnum.NO.getCode());
 
 
         List<ResDetail> reResDetails = resDetailMapper.selectByExample(example);
+
+        if (reResDetails.size() > 0) {
+            for (ResDetail detail : reResDetails) {
+                if ("ChinaTelecom".equals(detail.getIsp())) {
+                    detail.setIsp("CT");
+                }
+                if ("ChinaUnicom".equals(detail.getIsp())) {
+                    detail.setIsp("CU");
+                }
+            }
+        }
 
 
         return reResDetails;
@@ -305,6 +317,7 @@ public class ResourcesServiceImpl implements ResourcesService {
         ResDetailExample example = new ResDetailExample();
         example.setOrderByClause("effective_time DESC");
         ResDetailExample.Criteria criteria = example.createCriteria();
+        criteria.andYnEqualTo(YNEnum.NO.getCode());
         RowBounds rowBounds = new RowBounds(0,5);
         List<ResDetail> resDetails = resDetailMapper.selectByExampleWithRowbounds(example, rowBounds);
 
@@ -354,6 +367,16 @@ public class ResourcesServiceImpl implements ResourcesService {
 
         List<ResDetail> reResDetails = resDetailMapper.selectByExample(example);
 
+        if (reResDetails.size() > 0) {
+            for (ResDetail detail : reResDetails) {
+                if ("ChinaTelecom".equals(detail.getIsp())) {
+                    detail.setIsp("CT");
+                }
+                if ("ChinaUnicom".equals(detail.getIsp())) {
+                    detail.setIsp("CU");
+                }
+            }
+        }
 
         return reResDetails;
     }

@@ -9,38 +9,39 @@
   </select>
 
   <select id="getUnicomCount" resultType="java.lang.Integer" parameterType="java.lang.String">
-    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND owner = 'ChinaUnicom'
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND ISP = 'ChinaUnicom'
   </select>
 
   <select id="getTelecomCount" resultType="java.lang.Integer" parameterType="java.lang.String">
-    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND owner = 'ChinaTelecom'
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND ISP = 'ChinaTelecom'
   </select>
 
   <select id="getUnicomUsing" resultType="java.lang.Integer" parameterType="java.lang.String">
-    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND status = '0' AND owner = 'ChinaUnicom'
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND status = '0' AND ISP = 'ChinaUnicom'
   </select>
 
   <select id="getUnicomBuilding" resultType="java.lang.Integer" parameterType="java.lang.String">
-    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND status = '1' AND owner = 'ChinaUnicom'
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND status = '1' AND ISP = 'ChinaUnicom'
   </select>
   <select id="getUnicomPlaning" resultType="java.lang.Integer" parameterType="java.lang.String">
-    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND status = '2' AND owner = 'ChinaUnicom'
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND status = '2' AND ISP = 'ChinaUnicom'
   </select>
   <select id="getUnicomMaintenance" resultType="java.lang.Integer" parameterType="java.lang.String">
-    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND status = '3' AND owner = 'ChinaUnicom'
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND status = '3' AND ISP = 'ChinaUnicom'
   </select>
   <select id="getTelecomUsing" resultType="java.lang.Integer" parameterType="java.lang.String">
-    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND status = '0' AND owner = 'ChinaTelecom'
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND status = '0' AND ISP = 'ChinaTelecom'
   </select>
   <select id="getTelecomBuilding" resultType="java.lang.Integer" parameterType="java.lang.String">
-    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND status = '1' AND owner = 'ChinaTelecom'
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND status = '1' AND ISP = 'ChinaTelecom'
   </select>
   <select id="getTelecomPlaning" resultType="java.lang.Integer" parameterType="java.lang.String">
-    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND status = '2' AND owner = 'ChinaTelecom'
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND status = '2' AND ISP = 'ChinaTelecom'
   </select>
   <select id="getTelecomMaintenance" resultType="java.lang.Integer" parameterType="java.lang.String">
-    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND status = '3' AND owner = 'ChinaTelecom'
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND status = '3' AND ISP = 'ChinaTelecom'
   </select>
+
 
 
   <select id="getUnicomRentInJanuary" resultType="java.lang.Integer" parameterType="java.lang.String">
@@ -148,31 +149,26 @@
     <result property="effectiveTime" column="effective_time"/>
   </resultMap>
   <select id="getUnicomRentDetailByCondition" parameterType="java.lang.String" resultMap="unicomRentDetailByCondition">
-    (SELECT resource_name,owner,lessor,lease_status,status,area_code,effective_time
-    FROM res_detail
-    WHERE lessee='ChinaUnicom' AND lease_status=0 AND resource_type=#{resourceType}
-    <if test="resourceName !=null">
-      AND resource_name LIKE concat('%',concat(#{resourceName}),'%')
-    </if>
-    <if test="leaseStatus != null">
-      AND lease_status =#{leaseStatus}
-    </if>
-    <if test="status != null">
-      AND status =#{status}
-    </if>)
-    UNION ALL
-    (SELECT resource_name,owner,lessor,lease_status,status,area_code,effective_time
-    FROM res_detail
-    WHERE lessor='ChinaUnicom' AND lease_status=2 AND resource_type=#{resourceType}
-    <if test="resourceName !=null">
-      AND resource_name LIKE concat('%',concat(#{resourceName}),'%')
-    </if>
-    <if test="leaseStatus != null">
-      AND lease_status =#{leaseStatus}
-    </if>
-    <if test="status != null">
-      AND status =#{status}
-    </if>)
+    SELECT a.*
+    FROM
+        (SELECT resource_name,owner,lessor,lease_status,status,area_code,effective_time
+        FROM res_detail
+        WHERE lessee='ChinaUnicom' AND lease_status=0 AND resource_type=#{resourceType}
+        UNION ALL
+        SELECT resource_name,owner,lessor,lease_status,status,area_code,effective_time
+        FROM res_detail
+        WHERE lessor='ChinaUnicom' AND lease_status=2 AND resource_type=#{resourceType})a
+      <trim prefix="WHERE" prefixOverrides="AND |OR ">
+          <if test="resourceName !=null">
+              AND a.resource_name LIKE concat('%',concat(#{resourceName}),'%')
+          </if>
+          <if test="leaseStatus != null">
+              AND a.lease_status =#{leaseStatus}
+          </if>
+          <if test="status != null">
+              AND a.status =#{status}
+          </if>
+      </trim>
   </select>
 
   <resultMap type="com.whalecloud.domain.Progress" id="telecomRentDetailByCondition">
@@ -186,42 +182,37 @@
     <result property="effectiveTime" column="effective_time"/>
   </resultMap>
   <select id="getTelecomRentDetailByCondition" parameterType="java.lang.String" resultMap="telecomRentDetailByCondition">
-      (SELECT resource_name,owner,lessor,lease_status,status,area_code,effective_time
-    FROM res_detail
-    WHERE lessee='ChinaTelecom' AND lease_status=0 AND resource_type=#{resourceType}
-    <if test="resourceName !=null">
-      AND resource_name LIKE concat('%',concat(#{resourceName}),'%')
-    </if>
-    <if test="leaseStatus != null">
-      AND lease_status =#{leaseStatus}
-    </if>
-    <if test="status != null">
-      AND status =#{status}
-    </if>)
-    UNION ALL
-    (SELECT resource_name,owner,lessor,lease_status,status,area_code,effective_time
-    FROM res_detail
-    WHERE lessor='ChinaTelecom' AND lease_status=2 AND resource_type=#{resourceType}
-    <if test="resourceName !=null">
-      AND resource_name LIKE concat('%',concat(#{resourceName}),'%')
-    </if>
-    <if test="leaseStatus != null">
-      AND lease_status =#{leaseStatus}
-    </if>
-    <if test="status != null">
-      AND status =#{status}
-    </if>)
+    SELECT a.*
+    FROM
+          (SELECT resource_name,owner,lessor,lease_status,status,area_code,effective_time
+        FROM res_detail
+        WHERE lessee='ChinaTelecom' AND lease_status=0 AND resource_type=#{resourceType}
+        UNION ALL
+        SELECT resource_name,owner,lessor,lease_status,status,area_code,effective_time
+        FROM res_detail
+        WHERE lessor='ChinaTelecom' AND lease_status=2 AND resource_type=#{resourceType}) a
+      <trim prefix="WHERE" prefixOverrides="AND |OR ">
+        <if test="resourceName !=null">
+          AND a.resource_name LIKE concat('%',concat(#{resourceName}),'%')
+        </if>
+        <if test="leaseStatus != null">
+          AND a.lease_status =#{leaseStatus}
+        </if>
+        <if test="status != null">
+          AND a.status =#{status}
+        </if>
+      </trim>
   </select>
 
 
   <select id="getUnicomRentIn" resultType="java.lang.Integer" parameterType="java.lang.String">
-    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND lessee='ChinaUnicom' AND lease_status=0
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND lessor='ChinaTelecom' AND lease_status=2
   </select>
   <select id="getUnicomRentOut" resultType="java.lang.Integer" parameterType="java.lang.String">
     SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND lessor='ChinaUnicom' AND lease_status=2
   </select>
   <select id="getTelecomRentIn" resultType="java.lang.Integer" parameterType="java.lang.String">
-    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND lessee='ChinaTelecom' AND lease_status=0
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND lessor='ChinaUnicom' AND lease_status=2
   </select>
   <select id="getTelecomRentOut" resultType="java.lang.Integer" parameterType="java.lang.String">
     SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND lessor='ChinaTelecom' AND lease_status=2
@@ -487,6 +478,39 @@
     SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND area_code = 'FT' AND STATUS= '3'
   </select>
 
+  <!--第三方基站数量-->
+  <select id="getInvestorPlaning" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(id) FROM res_detail WHERE resource_type=#{resourceType} AND status = '2' AND owner NOT IN ('ChinaUnicom','ChinaTelecom')
+  </select>
+
+  <!--总的用户数量-->
+  <select id="getTotalUser" resultType="java.lang.Integer">
+    SELECT COUNT(id) FROM user
+  </select>
+
+  <!--中标的基站数量-->
+  <select id="getBid" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT COUNT(q.is_bid) FROM quotation q,res_detail d
+    WHERE q.resource_id=d.resource_id AND d.resource_type=#{resourceType} AND q.is_bid= 1
+  </select>
+
+  <!--中标的基站的总费用-->
+  <select id="getTotalBidCost" resultType="java.math.BigDecimal" parameterType="java.lang.String">
+    SELECT SUM(q.quotation_amount) FROM quotation q,res_detail d
+    WHERE q.resource_id=d.resource_id AND d.resource_type=#{resourceType} AND q.is_bid= 1
+  </select>
+
+  <!--第三方中标金额总和-->
+  <resultMap type="com.whalecloud.domain.MyQuotation" id="investorCost">
+    <result property="name" column="offeror"/>
+    <result property="value" column="sumQuotationAmount"/>
+  </resultMap>
+  <select id="getInvestorCost" parameterType="java.lang.String" resultMap="investorCost" >
+    SELECT q.offeror,SUM(q.quotation_amount) sumQuotationAmount
+    FROM quotation q,res_detail d
+    WHERE q.resource_id=d.resource_id AND d.resource_type=#{resourceType} AND q.is_bid=1
+    GROUP BY q.offeror
+  </select>
 
 
 </mapper>

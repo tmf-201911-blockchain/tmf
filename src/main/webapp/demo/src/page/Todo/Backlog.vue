@@ -6,47 +6,58 @@
           :data="tableData"
           style="width: 100%"
           empty-text="Temporarily no data"
+          max-height="400px"
         >
           <el-table-column
             type="index"
+            align="center"
             label="ID"
             :index="indexMethod">
           </el-table-column>
           <el-table-column
             prop="resourceName"
+            align="center"
             label="Resource Applied"
+            :show-overflow-tooltip="true"
             width="150">
             <template slot-scope="scope">
-              <el-button @click="TodoDeal(scope.row)" type="text" size="small">{{scope.row.resourceName}}</el-button>
+              <el-button @click="TodoDeal(scope.row)" type="text" size="mini">{{scope.row.resourceName}}</el-button>
             </template>
           </el-table-column>
           <el-table-column
             prop="resourceId"
+            align="center"
             label="Resource ID"
             width="120">
           </el-table-column>
           <el-table-column
             prop="taskId"
+            align="center"
             label="Task ID">
           </el-table-column>
           <el-table-column
-            prop="areaCode"
-            label="Area Code">
+            prop="resourceType"
+            align="center"
+            label="Resource Type">
           </el-table-column>
           <el-table-column
             prop="lessee"
+            align="center"
             label="Applicant">
           </el-table-column>
           <el-table-column
             prop="applicationTime"
+            align="center"
             label="Application Time">
           </el-table-column>
           <el-table-column
             prop="applicationType"
+            align="center"
             label="Application Type">
           </el-table-column>
           <el-table-column
             prop="caozuo"
+            align="center"
             label="Action">
             <template slot-scope="scope">
               <el-button @click="TodoDeal(scope.row)" type="text" size="small">Process</el-button>
@@ -126,7 +137,7 @@
         TodoApi.getAllInfo({ resourceId, taskId }).then(result => {
           this.dialogVisible = true;
           result.todo = true; // 表示从待办页面进入
-          result.dialogTitile = '待办处理'; // 设置dialogTitile
+          result.dialogTitile = 'To be processed'; // 设置dialogTitile
           this.TODO_ITEM(result);
         }).catch(error => {
           console.log(error);
@@ -166,6 +177,11 @@
             if (item.applicationType) {
               item.applicationType = this.applicationType[item.applicationType];
             }
+            Object.keys(item).forEach(keyItem => {
+              if (!item[keyItem]) {
+                item[keyItem] = '-';
+              }
+            });
           })
           this.tableData = list;
         }).catch(error => {

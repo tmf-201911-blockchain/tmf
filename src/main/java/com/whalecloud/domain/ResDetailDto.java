@@ -40,6 +40,8 @@ public class ResDetailDto {
 
     private Double rate;
 
+    private String isp;
+
     private String latitude;
 
     private String longitude;
@@ -62,9 +64,25 @@ public class ResDetailDto {
 
     private Date deadline;
 
-
+    private Long quotationDeadline;
 
     private List<ReportRes> reportRes;
+
+    public String getIsp() {
+        return isp;
+    }
+
+    public void setIsp(String isp) {
+        this.isp = isp;
+    }
+
+    public Long getQuotationDeadline() {
+        return quotationDeadline;
+    }
+
+    public void setQuotationDeadline(Long quotationDeadline) {
+        this.quotationDeadline = quotationDeadline;
+    }
 
     public String getInvestmentCost() {
         return investmentCost;

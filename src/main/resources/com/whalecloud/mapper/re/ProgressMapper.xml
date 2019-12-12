@@ -28,7 +28,7 @@
         <result property="resourceId" column="resource_id"/>
         <result property="applicationType" column="application_type"/>
         <result property="taskId" column="task_id"/>
-        <result property="areaCode" column="area_code"/>
+        <result property="resourceType" column="resource_type"/>
         <result property="lessee" column="lessee"/>
         <result property="applicationTime" column="application_time"/>
         <result property="progress" column="progress"/>
@@ -38,7 +38,7 @@
         SELECT
         p.resource_name,p.resource_id,p.task_id,r.resource_type,p.lessee,p.application_type,p.application_time,p.progress
         FROM res_progress p,res_detail r
-        WHERE p.resource_id=r.resource_id AND r.owner='ChinaUnicom' AND p.progress = '0'
+        WHERE p.resource_id=r.resource_id AND r.ISP='ChinaUnicom' AND p.progress = '0'
             <if test="resourceType !=null">
                 AND r.resource_type = #{resourceType}
             </if>
@@ -56,7 +56,7 @@
         <result property="resourceId" column="resource_id"/>
         <result property="applicationType" column="application_type"/>
         <result property="taskId" column="task_id"/>
-        <result property="areaCode" column="area_code"/>
+        <result property="resourceType" column="resource_type"/>
         <result property="lessee" column="lessee"/>
         <result property="applicationTime" column="application_time"/>
         <result property="progress" column="progress"/>
@@ -65,7 +65,7 @@
         SELECT
         p.resource_name,p.resource_id,p.task_id,r.resource_type,p.lessee,p.application_type,p.application_time,p.progress
         FROM res_progress p,res_detail r
-        WHERE p.resource_id=r.resource_id AND r.owner='ChinaUnicom' AND p.progress != '0'
+        WHERE p.resource_id=r.resource_id AND r.ISP='ChinaUnicom' AND p.progress != '0'
         <if test="resourceType !=null">
             AND r.resource_type = #{resourceType}
         </if>
@@ -83,7 +83,7 @@
         <result property="resourceId" column="resource_id"/>
         <result property="applicationType" column="application_type"/>
         <result property="taskId" column="task_id"/>
-        <result property="areaCode" column="area_code"/>
+        <result property="resourceType" column="resource_type"/>
         <result property="lessee" column="lessee"/>
         <result property="applicationTime" column="application_time"/>
         <result property="progress" column="progress"/>
@@ -92,7 +92,7 @@
         SELECT
         p.resource_name,p.resource_id,p.task_id,r.resource_type,p.lessee,p.application_type,p.application_time,p.progress
         FROM res_progress p,res_detail r
-        WHERE p.resource_id=r.resource_id AND r.owner='ChinaTelecom'
+        WHERE p.resource_id=r.resource_id AND r.ISP='ChinaTelecom'
         <if test="resourceType !=null">
             AND r.resource_type = #{resourceType}
         </if>
@@ -110,7 +110,7 @@
         <result property="resourceId" column="resource_id"/>
         <result property="applicationType" column="application_type"/>
         <result property="taskId" column="task_id"/>
-        <result property="areaCode" column="area_code"/>
+        <result property="resourceType" column="resource_type"/>
         <result property="lessee" column="lessee"/>
         <result property="applicationTime" column="application_time"/>
         <result property="progress" column="progress"/>
@@ -120,7 +120,7 @@
         SELECT
         p.resource_name,p.resource_id,p.task_id,r.resource_type,p.lessee,p.application_type,p.application_time,p.progress
         FROM res_progress p,res_detail r
-        WHERE p.resource_id=r.resource_id AND r.owner='ChinaTelecom' AND p.progress = '0'
+        WHERE p.resource_id=r.resource_id AND r.ISP='ChinaTelecom' AND p.progress = '0'
         <if test="resourceType !=null">
             AND r.resource_type = #{resourceType}
         </if>
@@ -138,7 +138,7 @@
         <result property="resourceId" column="resource_id"/>
         <result property="applicationType" column="application_type"/>
         <result property="taskId" column="task_id"/>
-        <result property="areaCode" column="area_code"/>
+        <result property="resourceType" column="resource_type"/>
         <result property="lessee" column="lessee"/>
         <result property="applicationTime" column="application_time"/>
         <result property="progress" column="progress"/>
@@ -147,7 +147,7 @@
         SELECT
         p.resource_name,p.resource_id,p.task_id,r.resource_type,p.lessee,p.application_type,p.application_time,p.progress
         FROM res_progress p,res_detail r
-        WHERE p.resource_id=r.resource_id AND r.owner='ChinaTelecom' AND p.progress != '0'
+        WHERE p.resource_id=r.resource_id AND r.ISP='ChinaTelecom' AND p.progress != '0'
         <if test="resourceType !=null">
             AND r.resource_type = #{resourceType}
         </if>
@@ -166,7 +166,7 @@
         <result property="applicationType" column="application_type"/>
 
         <result property="taskId" column="task_id"/>
-        <result property="areaCode" column="area_code"/>
+        <result property="resourceType" column="resource_type"/>
         <result property="lessee" column="lessee"/>
         <result property="applicationTime" column="application_time"/>
         <result property="progress" column="progress"/>
@@ -175,7 +175,7 @@
         SELECT
         p.resource_name,p.resource_id,p.task_id,r.resource_type,p.lessee,p.application_type,p.application_time,p.progress
         FROM res_progress p,res_detail r
-        WHERE p.resource_id=r.resource_id AND r.owner='ChinaUnicom'
+        WHERE p.resource_id=r.resource_id AND r.ISP='ChinaUnicom'
         <if test="resourceType !=null">
             AND r.resource_type = #{resourceType}
         </if>
@@ -207,4 +207,6 @@
         FROM res_progress
         WHERE task_id=#{taskId}
     </select>
+
+
 </mapper>

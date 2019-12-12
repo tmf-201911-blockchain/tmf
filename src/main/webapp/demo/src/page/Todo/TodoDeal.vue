@@ -51,16 +51,26 @@
         this.$emit('upList');
       },
       updateUnicomProgress() {
-        if (this.todoItem.todo) {
+        if (this.todoItem.todo || this.todoItem.OpsProcess) {
           this.$refs.submitFn.updateUnicomProgress().then(result => {
-            if (result === '操作成功') {
-              this.$msg.success("Success！");
+            if (result === '操作成功' || result.code == 200) {
+              // this.$msg.success("Success！");
+              this.$msg({
+                message: 'Success',
+                type: 'success',
+                duration: '1000',
+              });
               this.closeDialog();
               this.upList();
             }
           }).catch(error => {
             console.log(error);
-            this.$msg.error('Error:', error);
+            // this.$msg.error('Error:', error);
+            this.$msg({
+              message: 'Error',
+              type: 'error',
+              duration: '1000',
+            });
           });
         } else {
           this.closeDialog();
@@ -73,6 +83,9 @@
     components: {
       TodoDetails,
       TodoForm,
+    },
+    destroyed() {
+      this.$store.commit('TODO_ITEM', {});
     }
   }
 </script>

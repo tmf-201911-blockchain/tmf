@@ -3,6 +3,7 @@ package com.whalecloud.service;
 import com.whalecloud.domain.OpsInfo;
 import com.whalecloud.domain.ReportInfoResponse;
 import com.whalecloud.domain.ReportResDto;
+import com.whalecloud.domain.ReportResWithSpeed;
 import com.whalecloud.domain.re.ReportRes;
 
 import java.util.List;
@@ -15,6 +16,9 @@ import java.util.List;
  * @date 2019/10/31
  */
 public interface ReportResService {
+
+    void cochain(String taskId) throws Exception;
+
 
     /**
      * 报障
@@ -102,6 +106,8 @@ public interface ReportResService {
      */
     List<ReportRes> getOneByResourceId(String resourceId) throws Exception;
 
+
+    List<ReportResWithSpeed> showStationReport(String resourceId) throws Exception;
 
 }
 

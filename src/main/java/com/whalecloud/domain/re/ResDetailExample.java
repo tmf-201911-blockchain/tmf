@@ -682,6 +682,76 @@ public class ResDetailExample {
             return (Criteria) this;
         }
 
+        public Criteria andIspIsNull() {
+            addCriterion("ISP is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIspIsNotNull() {
+            addCriterion("ISP is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIspEqualTo(String value) {
+            addCriterion("ISP =", value, "isp");
+            return (Criteria) this;
+        }
+
+        public Criteria andIspNotEqualTo(String value) {
+            addCriterion("ISP <>", value, "isp");
+            return (Criteria) this;
+        }
+
+        public Criteria andIspGreaterThan(String value) {
+            addCriterion("ISP >", value, "isp");
+            return (Criteria) this;
+        }
+
+        public Criteria andIspGreaterThanOrEqualTo(String value) {
+            addCriterion("ISP >=", value, "isp");
+            return (Criteria) this;
+        }
+
+        public Criteria andIspLessThan(String value) {
+            addCriterion("ISP <", value, "isp");
+            return (Criteria) this;
+        }
+
+        public Criteria andIspLessThanOrEqualTo(String value) {
+            addCriterion("ISP <=", value, "isp");
+            return (Criteria) this;
+        }
+
+        public Criteria andIspLike(String value) {
+            addCriterion("ISP like", value, "isp");
+            return (Criteria) this;
+        }
+
+        public Criteria andIspNotLike(String value) {
+            addCriterion("ISP not like", value, "isp");
+            return (Criteria) this;
+        }
+
+        public Criteria andIspIn(List<String> values) {
+            addCriterion("ISP in", values, "isp");
+            return (Criteria) this;
+        }
+
+        public Criteria andIspNotIn(List<String> values) {
+            addCriterion("ISP not in", values, "isp");
+            return (Criteria) this;
+        }
+
+        public Criteria andIspBetween(String value1, String value2) {
+            addCriterion("ISP between", value1, value2, "isp");
+            return (Criteria) this;
+        }
+
+        public Criteria andIspNotBetween(String value1, String value2) {
+            addCriterion("ISP not between", value1, value2, "isp");
+            return (Criteria) this;
+        }
+
         public Criteria andInvestmentCostIsNull() {
             addCriterion("investment_cost is null");
             return (Criteria) this;
@@ -1744,6 +1814,11 @@ public class ResDetailExample {
 
         public Criteria andLesseeLikeInsensitive(String value) {
             addCriterion("upper(lessee) like", value.toUpperCase(), "lessee");
+            return (Criteria) this;
+        }
+
+        public Criteria andIspLikeInsensitive(String value) {
+            addCriterion("upper(ISP) like", value.toUpperCase(), "isp");
             return (Criteria) this;
         }
 

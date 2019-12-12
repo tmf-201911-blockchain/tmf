@@ -2,6 +2,7 @@ package com.whalecloud.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.whalecloud.domain.MyQuotation;
 import com.whalecloud.domain.Progress;
 import com.whalecloud.domain.QueryResult;
 import com.whalecloud.service.CountService;
@@ -80,7 +81,7 @@ public class CountController {
     @RequestMapping(value = "getCountByResourceType",method = RequestMethod.GET,produces = "application/json;charset=UTF-8")
     public String getCountByResourceType(String resourceType,HttpServletResponse response){
         response.setHeader("Access-Control-Allow-Origin", "*");
-        List<Map<String,Integer>> list = countService.getCountByResourceType(resourceType);
+        Map<String,Integer> list = countService.getCountByResourceType(resourceType);
         String s = gson.toJson(list);
         return s;
     }
@@ -380,6 +381,35 @@ public class CountController {
         return s;
     }
 
+    //第三方统计
+    @ResponseBody
+    @RequestMapping(value = "getInvestorCount",produces = "application/json;charset=UTF-8")
+    public String getInvestorCount(String resourceType,HttpServletResponse response) {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        List<Object> list = countService.getInvestorCount(resourceType);
+        String s = gson.toJson(list);
+        return s;
+    }
+
+    //规划中基站分布
+    @ResponseBody
+    @RequestMapping(value = "getPlanStation",produces = "application/json;charset=UTF-8")
+    public String getPlanStation(String resourceType,HttpServletResponse response) {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        List<Map<String, Object>> planStation = countService.getPlanStation(resourceType);
+        String s = gson.toJson(planStation);
+        return s;
+    }
+
+    //第三方中标金额总和
+    @ResponseBody
+    @RequestMapping(value = "getInvestorCost",produces = "application/json;charset=UTF-8")
+    public String getInvestorCost(String resourceType,HttpServletResponse response) {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        List<MyQuotation> investorCost = countService.getInvestorCost(resourceType);
+        String s = gson.toJson(investorCost);
+        return s;
+    }
 }
 
 

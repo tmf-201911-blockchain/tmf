@@ -30,6 +30,8 @@ public class ResAllInfo {
 
     private Integer status;
 
+    private String isp;
+
     private Integer importance;
 
     private Double rate;
@@ -60,6 +62,13 @@ public class ResAllInfo {
 
     private String applyReason;
 
+    public String getIsp() {
+        return isp;
+    }
+
+    public void setIsp(String isp) {
+        this.isp = isp;
+    }
 
     public String getApplyReason() {
         return applyReason;

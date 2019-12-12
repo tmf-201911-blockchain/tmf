@@ -12,7 +12,7 @@ public class QueryResult<T> {
     private int pages;
 
     //总租金
-    private Double totalActualRate;
+    private Object totalActualRate;
 
     public List<T> getList() {
         return list;
@@ -38,11 +38,11 @@ public class QueryResult<T> {
         this.pages = pages;
     }
 
-    public Double getTotalActualRate() {
+    public Object getTotalActualRate() {
         return totalActualRate;
     }
 
-    public void setTotalActualRate(Double totalActualRate) {
+    public void setTotalActualRate(Object totalActualRate) {
         this.totalActualRate = totalActualRate;
     }
 }

@@ -9,7 +9,11 @@ const state = {
   hasTodo: false,
   hasApplication: false,
   routerPath: '',
+  ResourceDialogId: '',
   isHasApproval: false,
+  isHasInprogress: false,
+  ResourceDialogVisibledat: false,
+  ActualTotal: 0,
 }
 
 export default state;

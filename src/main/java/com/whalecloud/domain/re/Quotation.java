@@ -15,7 +15,7 @@ public class Quotation implements Serializable {
 
     private Date quotationTime;
 
-    private Integer idBid;
+    private Integer isBid;
 
     private Date createTime;
 
@@ -23,7 +23,21 @@ public class Quotation implements Serializable {
 
     private Integer yn;
 
+    /**
+     * 加密金额
+     *
+     */
+    private String encryptAmount;
+
     private static final long serialVersionUID = 1L;
+
+    public String getEncryptAmount() {
+        return encryptAmount;
+    }
+
+    public void setEncryptAmount(String encryptAmount) {
+        this.encryptAmount = encryptAmount;
+    }
 
     public Long getId() {
         return id;
@@ -65,12 +79,12 @@ public class Quotation implements Serializable {
         this.quotationTime = quotationTime;
     }
 
-    public Integer getIdBid() {
-        return idBid;
+    public Integer getIsBid() {
+        return isBid;
     }
 
-    public void setIdBid(Integer idBid) {
-        this.idBid = idBid;
+    public void setIsBid(Integer isBid) {
+        this.isBid = isBid;
     }
 
     public Date getCreateTime() {

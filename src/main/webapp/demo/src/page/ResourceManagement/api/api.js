@@ -134,6 +134,68 @@ function haveApplied(params, method) {
   });
 }
 //资源申请点击之后不能点击
+function isApplyRes(params, method) {
+  return service({
+    url: 'resources/isApplyRes',
+    params,
+    method,
+  });
+}
+function isApplyEnd(params, method) {
+  return service({
+    url: 'resources/isApplyEnd',
+    params,
+    method,
+  });
+}
+//评论
+// function evaluate(params, method) {
+//   return service({
+//     url: 'resources/evaluate',
+//     params,
+//     method,
+//   });
+// }
+//发起招标
+function auction(params, method) {
+  return service({
+    url: 'bid/auction',
+    params,
+    method,
+  });
+}
+//招标详情不加密
+function getAllByResourceId(params, method) {
+  return service({
+    url: 'bid/getAllByResourceId',
+    params,
+    method,
+  });
+}
+//招标加密
+function getEncryptInfo(params, method) {
+  return service({
+    url: 'bid/getEncryptInfo',
+    params,
+    method,
+  });
+}
+//获取用户报障信息
+function showStationReport(params, method) {
+  return service({
+    url: 'resources/showStationReport',
+    params,
+    method,
+  });
+}
+//上链
+function evaluate(params, method) {
+  return service({
+    url: 'resources/evaluate',
+    params,
+    method,
+  });
+}
 export default {
   getAll,
   getResByName,
@@ -150,5 +212,13 @@ export default {
   apply,
   end,
   haveApplied,
+  isApplyRes,
+  isApplyEnd,
+  auction,
+  getAllByResourceId,
+  getEncryptInfo,
+  // evaluate,
+  showStationReport,
+  evaluate,
 }
 

@@ -28,17 +28,29 @@
       active-text-color="#409EFF">
 
       <el-menu-item index="/Index">
-        <i class="el-icon-menu"></i>
-        <span slot="title">Resource Management</span>
+        <!--<i class="el-icon-menu"></i>-->
+        <i class="iconfont">&#xe64e;</i>
+        <span slot="title" class="title">Resource Management</span>
       </el-menu-item>
       <el-menu-item index="/Index/ResourcesStatistics">
-        <i class="el-icon-document"></i>
-        <span slot="title">Resource Statistics</span>
+        <!--<i class="el-icon-document"></i>-->
+        <i class="iconfont">&#xe64f;</i>
+        <span slot="title" class="title">Resource Statistics</span>
       </el-menu-item>
       <el-menu-item index="/Index/Todo">
-        <i class="el-icon-setting"></i>
-        <span slot="title">Application & Approval</span>
+        <!--<i class="el-icon-setting"></i>-->
+        <i class="iconfont">&#xe64d;</i>
+        <span slot="title" class="title">Application & Approval</span>
         <span class="btn-bell-badge" v-if="isHasApproval"></span>
+      </el-menu-item>
+      <el-menu-item index="/Index/OpsAndMaintenance" v-if="userInfo.Operator">
+        <i class="iconfont">&#xe850;</i>
+        <span slot="title" class="title">Ops & Maintenance</span>
+        <span class="btn-bell-badge" v-if="isHasInprogress"></span>
+      </el-menu-item>
+      <el-menu-item index="/Index/Settlement">
+        <i class="iconfont">&#xe670;</i>
+        <span slot="title" class="title">Settlement</span>
       </el-menu-item>
     </el-menu>
 
@@ -69,10 +81,16 @@
       }
     },
     computed: {
-      ...mapState(['toggleSider', 'routerPath', 'isHasApproval']),
+      ...mapState(['toggleSider', 'routerPath', 'isHasApproval', 'isHasInprogress', 'userInfo']),
       onRoutes() {
         if (this.routerPath.indexOf('/Index/Todo') > -1) {
           return '/Index/Todo';
+        }
+        if (this.routerPath.indexOf('/Index/Settlement') > -1) {
+          return '/Index/Settlement';
+        }
+        if (this.routerPath.indexOf('/Index/OpsAndMaintenance') > -1) {
+          return '/Index/OpsAndMaintenance';
         }
         return this.$route.path;
       },
@@ -149,6 +167,9 @@
     border-radius: 4px;
     background: #f56c6c;
     color: #fff;
+  }
+  .title{
+    margin-left: 10px
   }
 </style>
 

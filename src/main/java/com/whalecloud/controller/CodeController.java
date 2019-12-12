@@ -85,7 +85,7 @@ public class CodeController {
         request.putQueryParameter("RegionId", "cn-hangzhou");
         request.putQueryParameter("PhoneNumbers", phone);
         request.putQueryParameter("SignName", "TMF");
-        request.putQueryParameter("TemplateCode", "SMS_175530410");
+        request.putQueryParameter("TemplateCode", "SMS_177245191");
 
         Gson gson = new Gson();
         //验证码生成
@@ -159,7 +159,7 @@ public class CodeController {
      */
     @ResponseBody
     @RequestMapping(value = "report", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
-    public String  report(HttpServletResponse httpServletResponse,HttpServletRequest request,@RequestBody String dto) {
+    public String  report(HttpServletResponse httpServletResponse,HttpServletRequest request, @RequestBody String dto) {
         httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
 
         Gson gson = new Gson();
@@ -335,7 +335,7 @@ public class CodeController {
         try {
             ReportResDto dto = reportResService.getOneByTaskId(taskId);
 
-            String json = gson.toJson(new Respsonse("200", gson.toJson(dto)));
+            String json = gson.toJson(new Respsonse("200", "OK", dto));
             return json;
 
         } catch (Exception e) {

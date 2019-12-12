@@ -10,6 +10,7 @@
     <result column="owner" property="owner" jdbcType="VARCHAR" />
     <result column="lessor" property="lessor" jdbcType="VARCHAR" />
     <result column="lessee" property="lessee" jdbcType="VARCHAR" />
+    <result column="ISP" property="isp" jdbcType="VARCHAR" />
     <result column="investment_cost" property="investmentCost" jdbcType="VARCHAR" />
     <result column="effective_time" property="effectiveTime" jdbcType="DATE" />
     <result column="NEP" property="nep" jdbcType="VARCHAR" />
@@ -86,9 +87,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, resource_id, resource_name, resource_type, tower_id, owner, lessor, lessee, investment_cost, 
-    effective_time, NEP, status, importance, rate, latitude, longitude, area_code, address, 
-    lease_status, path, create_time, update_time, YN, deadline
+    id, resource_id, resource_name, resource_type, tower_id, owner, lessor, lessee, ISP, 
+    investment_cost, effective_time, NEP, status, importance, rate, latitude, longitude, 
+    area_code, address, lease_status, path, create_time, update_time, YN, deadline
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.whalecloud.domain.re.ResDetailExample" >
     select
@@ -123,22 +124,22 @@
   <insert id="insert" parameterType="com.whalecloud.domain.re.ResDetail" >
     insert into res_detail (id, resource_id, resource_name, 
       resource_type, tower_id, owner, 
-      lessor, lessee, investment_cost, 
-      effective_time, NEP, status, 
-      importance, rate, latitude, 
-      longitude, area_code, address, 
-      lease_status, path, create_time, 
-      update_time, YN, deadline
-      )
+      lessor, lessee, ISP, 
+      investment_cost, effective_time, NEP, 
+      status, importance, rate, 
+      latitude, longitude, area_code, 
+      address, lease_status, path, 
+      create_time, update_time, YN, 
+      deadline)
     values (#{id,jdbcType=BIGINT}, #{resourceId,jdbcType=VARCHAR}, #{resourceName,jdbcType=VARCHAR}, 
       #{resourceType,jdbcType=VARCHAR}, #{towerId,jdbcType=VARCHAR}, #{owner,jdbcType=VARCHAR}, 
-      #{lessor,jdbcType=VARCHAR}, #{lessee,jdbcType=VARCHAR}, #{investmentCost,jdbcType=VARCHAR}, 
-      #{effectiveTime,jdbcType=DATE}, #{nep,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
-      #{importance,jdbcType=INTEGER}, #{rate,jdbcType=DOUBLE}, #{latitude,jdbcType=VARCHAR}, 
-      #{longitude,jdbcType=VARCHAR}, #{areaCode,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
-      #{leaseStatus,jdbcType=INTEGER}, #{path,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{yn,jdbcType=INTEGER}, #{deadline,jdbcType=TIMESTAMP}
-      )
+      #{lessor,jdbcType=VARCHAR}, #{lessee,jdbcType=VARCHAR}, #{isp,jdbcType=VARCHAR}, 
+      #{investmentCost,jdbcType=VARCHAR}, #{effectiveTime,jdbcType=DATE}, #{nep,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER}, #{importance,jdbcType=INTEGER}, #{rate,jdbcType=DOUBLE}, 
+      #{latitude,jdbcType=VARCHAR}, #{longitude,jdbcType=VARCHAR}, #{areaCode,jdbcType=VARCHAR}, 
+      #{address,jdbcType=VARCHAR}, #{leaseStatus,jdbcType=INTEGER}, #{path,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{yn,jdbcType=INTEGER}, 
+      #{deadline,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.whalecloud.domain.re.ResDetail" >
     insert into res_detail
@@ -166,6 +167,9 @@
       </if>
       <if test="lessee != null" >
         lessee,
+      </if>
+      <if test="isp != null" >
+        ISP,
       </if>
       <if test="investmentCost != null" >
         investment_cost,
@@ -240,6 +244,9 @@
       </if>
       <if test="lessee != null" >
         #{lessee,jdbcType=VARCHAR},
+      </if>
+      <if test="isp != null" >
+        #{isp,jdbcType=VARCHAR},
       </if>
       <if test="investmentCost != null" >
         #{investmentCost,jdbcType=VARCHAR},
@@ -324,6 +331,9 @@
       <if test="record.lessee != null" >
         lessee = #{record.lessee,jdbcType=VARCHAR},
       </if>
+      <if test="record.isp != null" >
+        ISP = #{record.isp,jdbcType=VARCHAR},
+      </if>
       <if test="record.investmentCost != null" >
         investment_cost = #{record.investmentCost,jdbcType=VARCHAR},
       </if>
@@ -387,6 +397,7 @@
       owner = #{record.owner,jdbcType=VARCHAR},
       lessor = #{record.lessor,jdbcType=VARCHAR},
       lessee = #{record.lessee,jdbcType=VARCHAR},
+      ISP = #{record.isp,jdbcType=VARCHAR},
       investment_cost = #{record.investmentCost,jdbcType=VARCHAR},
       effective_time = #{record.effectiveTime,jdbcType=DATE},
       NEP = #{record.nep,jdbcType=VARCHAR},
@@ -430,6 +441,9 @@
       </if>
       <if test="lessee != null" >
         lessee = #{lessee,jdbcType=VARCHAR},
+      </if>
+      <if test="isp != null" >
+        ISP = #{isp,jdbcType=VARCHAR},
       </if>
       <if test="investmentCost != null" >
         investment_cost = #{investmentCost,jdbcType=VARCHAR},
@@ -491,6 +505,7 @@
       owner = #{owner,jdbcType=VARCHAR},
       lessor = #{lessor,jdbcType=VARCHAR},
       lessee = #{lessee,jdbcType=VARCHAR},
+      ISP = #{isp,jdbcType=VARCHAR},
       investment_cost = #{investmentCost,jdbcType=VARCHAR},
       effective_time = #{effectiveTime,jdbcType=DATE},
       NEP = #{nep,jdbcType=VARCHAR},

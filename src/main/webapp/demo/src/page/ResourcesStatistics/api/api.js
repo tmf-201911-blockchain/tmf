@@ -129,6 +129,28 @@ function getMapCount(params, method) {
     method,
   });
 }
+//最后饼图上面的数字
+function getInvestorCount(params, method) {
+  return service({
+    url: 'count/getInvestorCount',
+    params,
+    method,
+  });
+}
+function getPlanStation(params, method) {
+  return service({
+    url: 'count/getPlanStation',
+    params,
+    method,
+  });
+}
+function getInvestorCost(params, method) {
+  return service({
+    url: 'count/getInvestorCost',
+    params,
+    method,
+  });
+}
 export default {
   getTotalCount,
   getUnicomCount,
@@ -146,5 +168,8 @@ export default {
   getUnicomRentDetailByCondition,
   getTelecomRentDetailByCondition,
   getMapCount,
+  getInvestorCount,
+  getPlanStation,
+  getInvestorCost,
 }
 
