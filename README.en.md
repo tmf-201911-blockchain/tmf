@@ -1,175 +1,176 @@
-# tmf
+# Blockchain-based 5G Collaboration Economy
 
-#### Description
+#### Project Introduction
 
-TMF is a 5G Shared application platform.
-How to reduce CAPEX & OPEX is the current fundamental challenges for CSP in 5G era.
-High 5G network roll-out investment:
-    5G networks construction requires a huge capital investment.
-	Compared with 4G network, 5G needs more than 5 times base stations. 
-	China will invest 1.6 trillion RMB to realize 5G covering national wide. 
-	The operating cost of 5G will also be astronomical,  because each 5G base station’s power consumption is 2.5-4 times higher than the 4G base station.
-A Practice of Collaborative Economy:Co-build & Co-share 5G network
-Facilitating 5G network roll-out by applying the Collaborative Economy methodology might be a solution to the CAPEX and OPEX challenges.
-Impact：
-    The network infrastructure co-building and co-sharing among CSPs and third parties such as China Tower could significantly reduce construction costs.
-    Attract other industry financial investors by opening economic interests. Therefore, we can achieve greater-scale 5G network roll-out collaborations to accelerate the pace of 5G construction.
+The 5G network infrastructure investment is astronomical. To tackle the CAPEX and OPEX challenges CSPs are facing in 5G era, CSPs like China Unicom and China Telecom have launched the 5G network infrastructure co-building and co-sharing strategy, which is a practice of collaborative economy business model. 
 
-#### Software Architecture
+However, there are trust and efficiency issues to be addressed when carrying out the collaborations between multi-parties. Promisingly, these technical challenges could be facilitated by the features of blockchain. 
 
-1. The development environment:
-   - Language : java 8
-   - Dependency Management : Maven
-   - Database : MySQL 5.7
-2. Back End Dependency :
-   - Spring SSM
-   - MyBatis 3.2.8
-   - Druid 1.0.9
-   - log4j
-   - Gson 
-3. Front End Dependency : 
-   - Vue 2.6.10
-   - axios 0.19.0
-   - ant-design-vue 1.4.4
-   - echarts 4.4.0
-   - vue-router 3.0.1
-   - vuex 3.1.1
-   - webpack
+In a word, this catalyst aims at exploring the feasible solutions for 5G infrastructure co-building and co-sharing by utilizing the blockchain technology.
 
-#### Function Module: 
+This repository contains all components of the demo showcased in the TMF 2019 DTA KL events, including the frontend design, backend code as well the runtime required. Hopefully, this work could be a reference for the relevant solution or even spurs some creative contribution based on that.
+#### Software Structure
+
+1. Runtime:
+- Language: Java 8
+- Dependency Management: Maven
+- Database: MySQL 5.7
+2. Backend:
+- Framework: Spring SSM
+- Persistence Framework: MyBatis 3.2.8
+- Database Connection Pool: Alibaba Druid 1.0.9
+- Log Printing: log4j
+-Others: Gson 
+3. Frontend: 
+- Vue 2.6.10
+- Axios 0.19.0
+- Ant-design-vue 1.4.4
+- Echarts 4.4.0
+- Vue-router 3.0.1
+- Vuex 3.1.1
+- Webpack
+
+#### Function Modules:
 
 > User Sign In
 
-> > There are two types of users : Operators and third parties
+> > Two Types of Users: CSP User and Third-party User
 > >
-> > > The operator has the highest authority
+> > > CSP User is designed to own all the operation rights in the platform
 > > >
-> > > Third parties have the approval to bid for and view the base station or tower they own
+> > > Third-party User is allowed to:
+Participate in resource bidding; 
+Check the status of invested resources; 
+Approve/refuse the renting application for the resource they published(auxiliary resources like tower).
 > > >
 > > > 
 
 > Resource Management
 >
-> > Resource distribution, Resource running state, New resources(Tower or the base station), To find the resources, Resources for details,Resource modification,Resources to delete
+> > Resource GIS location, Resource Status, Initialize New Resource(tower or base station),Resource Query, Resource Specification, Resource Modification, Resource Deletion
 
 > Resource Statistics
 >
-> > Resource statistics module, It is divided into base station statistics and tower statistics
+> > Resource statistics module, including: Base Station statistics and Other Resource(eg.tower) statistics
 > >
-> > > The statistics can be divided into total number, proportion of each operator, proportion of each region, proportion of each resource state, proportion of leasing in and leasing out, amount of leasing out by each operator in each month, amount of resources owned by a third party and income, etc
+> > > The statistics are shown in different dimensions: resource total number, resource statistics by CSP, by region, by resource state, by leasing status, by time period, by revenue distribution etc.
 
 > Application & Approval
 >
-> > Resource approval module, Divided into pending, completed, my application
+> > Resource Application & Approval module includes 3 menus: pending application, approved application, my application
 
 > Ops & Maintenance
 >
-> > Obstacle report maintenance module
+> > Operation and maintenance issues report
 > >
-> > > The operator shall examine and approve the obstacle reported by ordinary users to the base station, which is divided into in progress and solved
+> > > End users report the base station signaling issues to serving CSP, serving CSP check reports and once verified, it would be sent to service providing CSP. Reports are of two types: verified or to be processed.
 
 > Settlement
 >
-> > The income module is divided into rent in, rent out and investment sharing
+> > Revenue contains two menus, divided by rent in and rent out
 
-#### Back-end controllers and their functions: 
+#### Backend Controllers and Functions: 
 
-1. BidController: bidding-->Interface sample :	/bid/**
-   - /auction : Personal bidding
-   - /getAllByResourceId : Bidding information display
-   - /getEncryptInfo : Get encrypted bidding information displayed
-2. CodeController : Captcha controller->Interface sample:   /code/**
-   - /send: Send verification code
-   - /verify: Verify that the verification code is correct
-   - /report: Declare failure
-   - /mark: mark
-   - /process: Declare failure approval
-   - /haveReported: Have you applied for
-   - /fetchList: Mobile terminal query
-   - /fetchListPC: PC query
-   - /getOne: Click approval to get the barrier information
-   - /getDetailByTaskId: Click the base station name for details	
-     3. CountController:Resources statistics-->Interface sample:   /count/**
-   - /getTotalCount: Query the total number of base stations
-   - /getUnicomCount: Query unicom base station number
-   - /getTelecomCount: Query the number of telecom base stations
-   - /getCountByResourceType:Query total/unicom total/telecom total by resource type
-   - /getPercent: The percentage of base station Numbers of China unicom and China telecom
-   - /getStationStatus: General use, construction, planning, maintenance
-   - /getTotalUsing: In total use
-   - /getTotalBuilding: Under construction
-   - /getTotalPlaning: The overall planning
-   - /getTotalMaintenance: The general maintenance
-   - /getUnicomPercent: Unicom in use, construction, planning, maintenance in the total percentage of unicom
-   - /getTelecomPercent: The total percentage of telecom in use, construction, planning and maintenance
-   - /getUnicomRent: Unicom rent in and rent out
-   - /getTelecomRent: Telecom rent in and rent out
-   - /getRentMonth: Unicom and telecom base station leasing trend statistics
-   - /getMapCount: The number of base stations in each district of Beijing
-   - /getInvestorCount: Third party statistics
-   - /getPlanStation: Base station distribution in planning
-   - /getInvestorCost: Total amount awarded by the third party
-3. ProgressController: Pending approval-->Interface sample:   /progress/**
-   - /updateResourceApply: Approval of resource applications received by China unicom and China telecom
-   - /updateTerminationApply:Approval of termination applications received by China unicom and China telecom
-   - /getUnicomUnfinishedByCondition: According to the conditions of the query connection backlog
-   - /getUnicomFinishedByCondition: According to the conditions of the query unicom has done
-   - /getUnicomApplyByCondition: Inquire the application of unicom according to the conditions
-   - /getTelecomUnfinishedByCondition: Query the telecom backlog according to the conditions
-   - /getTelecomFinishedByCondition: According to the conditions of the inquiry has been done
-   - /getTelecomApplyByCondition: Query telecom applications based on conditions
-   - /updatePlaning: The third party applies for the approval of the construction of the station
-4. ResourceController: Resource management-->Interface sample:  /resources/**
-   - /create: create
-   - /update: update
-   - /delete: delete
-   - /getResByName: Gets the resource by its name
-   - /getOne: Get a message
-   - /getDetail: Get the resource details
-   - /getAllInfo: Get all information about the resource, including application records
-   - /getMore: Get the latest 5 pieces of information
-   - /updateStatus: Update base station status
-   - /getResByStatus: Get the base station by state
-   - /getAll: Get all the resource information
-   - /apply:Resource application
-   - /deleteAllInfo: Delete all search records
-   - /getNewInfo: Get the latest 10 records
-   - /end: Resources to terminate
-   - /haveApplied: Whether the resource is rented out
-   - /isApplyRes: Has the resource been applied
-   - /isApplyEnd: Has the resource been terminated
-   - /evaluate: User reviews on the blockchain
-   - /showStationReport: Based on the details of the base station -- get the information of the user
-5. SettlementController: settlement-->Interface sample:   /rent/**
-   - /findRentInSettlement: Rent insettlement
-   - /findRentOutSettlement: Rent out settlement
-   - /getInvestorApply: Third party application for construction, bidding details show
-   - /getISPSharing: Operator revenue
-   - /getInvestmentSharing: Third party revenue
-6. UploadDownController:Encapsulates the control layer for file upload and download-->Interface sample:   /upload/**
-   - /getFile: File upload
-7. UserController: The user to control-->Interface sample: /user/**
-   - /login: login
+1. BidController: Bidding-->Interface Example: /bid/**
+- /auction: offering price
+- /getAllByResourceId: bidding information display
+- /getEncryptInfo: encrypted bidding information display
+2. CodeController: Verification Code Controller->Interface Example: /code/**
+- /send: Send Verification Code
+- /verify: Verify the code 
+- /report: Network fault report
+- /mark: Service rating
+- /process: Fault reports verification process
+- /haveReported: Fault reports verification results
+- /fetchList: End user query
+- /fetchListPC: PC user query
+- /getOne: Click on process, get fault report info
+- /getDetailByTaskId: Click on resource, get base station name
+3. CountController: Resource Statistics-->Interface Example: /count/**
+- /getTotalCount: Query the number of base stations
+- /getUnicomCount: Query the number of CU base station
+- /getTelecomCount: Query the number of CT base station
+- /getCountByResourceType: Query number by resource type
+- /getPercent: Query resource contribution proportion by CSP
+- /getStationStatus: Get resource number by filtering resource status
+- /getTotalUsing: Get the number of running resource
+- /getTotalBuilding: Get the number of resource under construction
+- /getTotalPlaning: Get the number of in planning resource
+- /getTotalMaintenance: Get the number of under maintenance resource
+- /getUnicomPercent: Get CU resource percentage by status
+- /getTelecomPercent: Get CT resource percentage by status
+- /getUnicomRent: CU resource rent in/rent out statistics
+- /getTelecomRent: CT resource rent in/rent out statistics
+- /getRentMonth: CU and CT resource renting trend 
+- /getMapCount: Resource number by district 
+- /getInvestorCount: number of resources invested by third party
+- /getPlanStation: In planning Base station distribution 
+- /getInvestorCost: Total amount of bidding
+3. ProgressController: Process application-->Interface Example: /progress/**
+- /updateResourceApply: Leasing application received
+- /updateTerminationApply: Leasing termination application received
+- /getUnicomUnfinishedByCondition: Query CU's received application by condition
+- /getUnicomFinishedByCondition: Query CU's processed application by condition
+- /getUnicomApplyByCondition: Query CU's application by condition
+- /getTelecomUnfinishedByCondition: Query CT's received application by condition
+- /getTelecomFinishedByCondition: Query CT's processed application by condition
+- /getTelecomApplyByCondition: Query CT's application by condition
+- /updatePlaning: Approve the application from third party
+4. ResourceController: Resource Management-->Interface Example: /resources/**
+- /create: Create new resource
+- /update: Modify resource
+- /delete: Delete resource
+- /getResByName: Get resource info by resource name
+- /getOne: Receive one message
+- /getDetail: Get detailed resource information
+- /getAllInfo: Get all resource information, including application record
+- /getMore: Get 5 latest messages
+- /updateStatus: Update resource status
+- /getResByStatus: Get resource info by status
+- /getAll: Get all resource info
+- /apply: Resource application
+- /deleteAllInfo: Delete all search records
+- /getNewInfo: Get lateset 10 messages
+- /end: Resource termination
+- /haveApplied: Get resource leasing status
+- /isApplyRes: Get resource application records
+- /isApplyEnd: Get resource termination records
+- /evaluate: Put user reports on the chain
+- /showStationReport: Get user report info from resource details page
+5. SettlementController: Settlement View-->Interface Example: /rent/**
+- /findRentInSettlement: Settlement data on resource rent in
+- /findRentOutSettlement: Settlement data resource rent out
+- /getInvestorApply: Bidding info display, which are from investors' application
+- /getISPSharing: CSP’s revenue
+- /getInvestmentSharing: Investors' revenue
+6. UploadDownController: Support file upload and download-->Interface Example: /upload/**
+- /getFile: Upload file
+7. UserController: User Management function-->Interface Example: /user/**
+- /login: User Login
 
-#### Use middleware:
+#### Middleware:
 
-1. nginx 1.8.0
-2. tomcat 8.5.47
+1. Nginx 1.8.0: Path for frontend files
+2. Tomcat 8.5.47: Path for backend code
 
-#### Install the tutorial:
+#### Implementation Guideline:
 
-1. Install jdk1.8
-2. find the file-->resource/sql/tmf.sql. run the sql file in the database(now use mysql)
-3. edit the project jdbc.properties(use your database)
-4. update the file
-   
-   ResourceManagement.vue
-   
-   ResourceManageMentDialog.vue
-   
-   axios.js
-   
-   replace all the words (http://122.192.9.52:20205) with your owner project service such as http://ip:port
-5. Enter webapp directory demo, command line **npm run dev**   to run the demo
+1. Install jdk1.8;
 
-ops: if have any questions to email ren.ning01@iwhalecloud.com
+2. Get sql script from path: resource/sql/tmf.sql，and run it in mysql;
+
+3. Modify jdbc local configuration;
+
+4. Modify Configuration file
+
+ResourceManagement.vue
+
+ResourceManageMentDialog.vue
+
+axios.js
+
+Replace all http://122.192.9.52:20205 with local project's http://ip:port;
+
+
+5. Enter demo folder under the webapp, run command npm run dev;
+
