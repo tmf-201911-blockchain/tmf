@@ -106,7 +106,7 @@ Approve/refuse the renting application for the resource they published(auxiliary
 - /getInvestorCount: number of resources invested by third party
 - /getPlanStation: In planning Base station distribution 
 - /getInvestorCost: Total amount of bidding
-3. ProgressController: Process application-->Interface Example: /progress/**
+4. ProgressController: Process application-->Interface Example: /progress/**
 - /updateResourceApply: Leasing application received
 - /updateTerminationApply: Leasing termination application received
 - /getUnicomUnfinishedByCondition: Query CU's received application by condition
@@ -116,7 +116,7 @@ Approve/refuse the renting application for the resource they published(auxiliary
 - /getTelecomFinishedByCondition: Query CT's processed application by condition
 - /getTelecomApplyByCondition: Query CT's application by condition
 - /updatePlaning: Approve the application from third party
-4. ResourceController: Resource Management-->Interface Example: /resources/**
+5. ResourceController: Resource Management-->Interface Example: /resources/**
 - /create: Create new resource
 - /update: Modify resource
 - /delete: Delete resource
@@ -137,15 +137,15 @@ Approve/refuse the renting application for the resource they published(auxiliary
 - /isApplyEnd: Get resource termination records
 - /evaluate: Put user reports on the chain
 - /showStationReport: Get user report info from resource details page
-5. SettlementController: Settlement View-->Interface Example: /rent/**
+6. SettlementController: Settlement View-->Interface Example: /rent/**
 - /findRentInSettlement: Settlement data on resource rent in
 - /findRentOutSettlement: Settlement data resource rent out
 - /getInvestorApply: Bidding info display, which are from investors' application
 - /getISPSharing: CSP’s revenue
 - /getInvestmentSharing: Investors' revenue
-6. UploadDownController: Support file upload and download-->Interface Example: /upload/**
+7. UploadDownController: Support file upload and download-->Interface Example: /upload/**
 - /getFile: Upload file
-7. UserController: User Management function-->Interface Example: /user/**
+8. UserController: User Management function-->Interface Example: /user/**
 - /login: User Login
 
 #### Middleware:
