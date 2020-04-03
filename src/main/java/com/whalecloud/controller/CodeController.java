@@ -73,7 +73,6 @@ public class CodeController {
         httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
 
 
-        DefaultProfile profile = DefaultProfile.getProfile("cn-hangzhou", "LTAI4FhBZ9gzu1kcqC3ouLyM", "UVRmeDLJQr9Y8q3NuF6uXjy2dY0yxt");
         IAcsClient client = new DefaultAcsClient(profile);
 
         CommonRequest request = new CommonRequest();
