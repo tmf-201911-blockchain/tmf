@@ -81,7 +81,7 @@ public class CodeController {
         request.setVersion("2017-05-25");
         request.setAction("SendSms");
 
-        request.putQueryParameter("RegionId", "cn-hangzhou");
+        request.putQueryParameter("RegionId", "cn-hangzhou1");
         request.putQueryParameter("PhoneNumbers", phone);
         request.putQueryParameter("SignName", "TMF");
         request.putQueryParameter("TemplateCode", "SMS_177245191");
